@@ -53,7 +53,7 @@ function Hero() {
         <p className={styles.description}>Passionate computer science student 
           majoring in Intelligent Computing, focused on building efficient and 
           user-friendly digital solutions. Always eager to learn and grow through new challenges.</p>
-        <a href={CV} download>
+        <a href="https://drive.google.com/file/d/1VaSQ44khPcKAmWoRbiue-EN5KnUqDj_Z/view?usp=sharing" target="_blank">
           <button className="hover">Résumé</button>
         </a>
       </div>
