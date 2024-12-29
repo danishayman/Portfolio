@@ -85,7 +85,6 @@ hr:hover {
   }
 }
 
-/* Optional: Add a subtle animation when the section first loads */
 @keyframes fadeIn {
   from {
     opacity: 0;
