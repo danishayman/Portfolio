@@ -145,3 +145,21 @@
     left: calc(1rem - 5px);
   }
 }
+
+@media (width >= 1400px) {
+  .container {
+    padding: 6rem;
+  }
+
+  .timelineItem {
+    padding-left: 4rem;
+  }
+
+  .timeline::before {
+    left: 2rem;
+  }
+
+  .timelineDot {
+    left: calc(2rem - 5px);
+  }
+}
