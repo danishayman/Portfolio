@@ -83,20 +83,19 @@ p{
     .sectionTitle{
         margin-bottom: 60px;
     }
-}
 
-
-
-@media(width >= 1400px){
-    #root{
-        gap: 200px;
-    }
     
-    h1{
-        font-size: 48px;
-    }
+    @media(width >= 1400px){
+        #root{
+            gap: 200px;
+        }
+        
+        h1{
+            font-size: 48px;
+        }
 
-    .sectionTitle{
-        margin-bottom: 75px;
+        .sectionTitle{
+            margin-bottom: 75px;
+        }
     }
 }
