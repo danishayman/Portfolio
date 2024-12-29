@@ -1,0 +1,152 @@
+.container {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    gap: 3rem;
+  }
+  
+  .container h2 {
+    font-size: 2rem;
+  }
+  
+  .workContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1000px;
+  }
+  
+  .tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .tab {
+    padding: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+  
+  .tab:hover {
+    background-color: var(--card-bg);
+    transform: translateX(10px);
+  }
+  
+  .tab.active {
+    background-color: var(--card-bg);
+    border: 1px solid var(--text-color);
+    transform: translateX(10px);
+  }
+  
+  .tab h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .tab p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+  
+  .content {
+    padding: 2rem;
+    border-radius: 8px;
+    background-color: var(--card-bg);
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  .header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .header h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .company {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 0.25rem;
+  }
+  
+  .duration {
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
+  
+  .description {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .description li {
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.6;
+  }
+  
+  .description li::before {
+    content: "•";
+    position: absolute;
+    left: 0.5rem;
+    opacity: 0.6;
+  }
+  .images {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  
+  .images img {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Ensures the image is square */
+    object-fit: cover; /* Ensures the image fills the square without distortion */
+    border-radius: 8px; /* Optional: Adds rounded corners */
+    border: 2px solid var(--text-color); /* Optional: Image border */
+    transition: transform 0.3s ease;
+  }
+  
+  .images img:hover {
+    transform: scale(1.01);
+  }
+  
+  
+  @media (width >= 800px) {
+    .container {
+      padding: 4rem;
+    }
+  
+    .workContainer {
+      flex-direction: row;
+      gap: 3rem;
+    }
+  
+    .tabs {
+      min-width: 300px;
+    }
+  
+    .content {
+      flex: 1;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
