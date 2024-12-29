@@ -29,12 +29,22 @@
     height: 100%;
     background-color: var(--text-color);
     opacity: 0.2;
+    transition: opacity 0.3s ease;
+  }
+  
+  .timeline:hover::before {
+    opacity: 0.4;
   }
   
   .timelineItem {
     position: relative;
     padding-left: 2rem;
     padding-bottom: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .timelineItem:hover {
+    transform: translateX(10px);
   }
   
   .timelineDot {
@@ -45,28 +55,57 @@
     height: 12px;
     border-radius: 50%;
     background-color: var(--text-color);
+    transition: all 0.3s ease;
+  }
+  
+  .timelineItem:hover .timelineDot {
+    transform: scale(1.5);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
   }
   
   .content {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .timelineItem:hover .content {
+    background-color: var(--card-bg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
   
   .content h3 {
     font-size: 1.25rem;
     font-weight: bold;
+    transition: transform 0.3s ease;
+  }
+  
+  .timelineItem:hover h3 {
+    transform: translateY(-2px);
   }
   
   .degree {
     color: var(--text-color);
     opacity: 0.8;
+    transition: opacity 0.3s ease;
+  }
+  
+  .timelineItem:hover .degree {
+    opacity: 1;
   }
   
   .duration {
     color: var(--text-color);
     opacity: 0.6;
     font-size: 0.9rem;
+    transition: opacity 0.3s ease;
+  }
+  
+  .timelineItem:hover .duration {
+    opacity: 0.8;
   }
   
   .achievements {
@@ -80,6 +119,13 @@
     opacity: 0.9;
     font-size: 0.95rem;
     margin-bottom: 0.25rem;
+    transition: all 0.3s ease;
+    transform-origin: left;
+  }
+  
+  .timelineItem:hover .achievements li {
+    opacity: 1;
+    transform: scale(1.02);
   }
   
   @media (width >= 800px) {
