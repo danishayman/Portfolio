@@ -6,27 +6,20 @@ function Education() {
       institution: "Universiti Sais Malaysia",
       degree: "Bachelor of Computer Science (Honours)(Intelligent Computing)",
       duration: "Oct 2022 - Present",
-      achievements: [
-        "Current CGPA: 3.42",
-        "1 Semester Dean List"
-      ]
+      achievements: ["Current CGPA: 3.42", "1 Semester Dean List"],
     },
     {
-        institution: "Penang Matriculation College",
-        degree: "Physical Science",
-        duration: "July 2021 - July 2022",
-        achievements: [
-            "Graduated with grade 3.92",
-        ]
+      institution: "Penang Matriculation College",
+      degree: "Physical Science",
+      duration: "July 2021 - July 2022",
+      achievements: ["Graduated with grade 3.92"],
     },
     {
       institution: "SMK Bukit Jambul, High Performance School",
       degree: "Science Stream",
       duration: "Jan 2015 - Dec 2020",
-      achievements: [
-        "SPM: 3A+ 4A",
-      ]
-    }
+      achievements: ["SPM: 3A+ 4A"],
+    },
   ];
 
   return (

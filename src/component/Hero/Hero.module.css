@@ -9,6 +9,8 @@
   
     .hero {
       max-width: 200px;
+      text-align: center;
+      margin: 0 auto;
     }
   
     span {
@@ -69,12 +71,14 @@
   
   .description {
     max-width: 30ch;
+    text-align: center; 
   }
   
   .info {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    align-items: center;
   }
   
   @media (width >= 800px) {
