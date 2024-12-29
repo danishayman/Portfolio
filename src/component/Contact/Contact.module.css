@@ -38,7 +38,7 @@ textarea {
 }
 
 input[type='submit'] {
-  background-color: var(--btn-color);
+  background-color: var(--bt-color);
   color: var(--btn-text-color);
   border: none;
   border-radius: 20px;
