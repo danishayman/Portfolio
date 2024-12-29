@@ -5,148 +5,158 @@
     align-items: center;
     padding: 2rem;
     gap: 3rem;
-  }
-  
-  .container h2 {
+}
+
+.container h2 {
     font-size: 2rem;
-  }
-  
-  .workContainer {
+}
+
+.workContainer {
     display: flex;
     flex-direction: column;
     gap: 2rem;
     width: 100%;
     max-width: 1000px;
-  }
-  
-  .tabs {
+}
+
+.tabs {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-  
-  .tab {
+}
+
+.tab {
     padding: 1rem;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
     border: 1px solid transparent;
-  }
-  
-  .tab:hover {
+}
+
+.tab:hover {
     background-color: var(--card-bg);
     transform: translateX(10px);
-  }
-  
-  .tab.active {
+}
+
+.tab.active {
+
     background-color: var(--card-bg);
     border: 1px solid var(--text-color);
+    box-shadow: 5px 5px grey;
     transform: translateX(10px);
-  }
-  
-  .tab h3 {
+}
+
+.tab h3 {
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
-  }
-  
-  .tab p {
+}
+
+.tab p {
     font-size: 0.9rem;
     opacity: 0.8;
-  }
-  
-  .content {
+}
+
+.content {
+    border: 2px solid #222;
+    box-shadow: 5px 5px grey;
     padding: 2rem;
     border-radius: 8px;
     background-color: var(--card-bg);
     animation: fadeIn 0.3s ease-out;
-  }
-  
-  .header {
+}
+
+.content:hover {
+    cursor: default;
+}
+
+.header {
     margin-bottom: 1.5rem;
-  }
-  
-  .header h3 {
+}
+
+.header h3 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
-  }
-  
-  .company {
+}
+
+.company {
     font-size: 1.1rem;
     opacity: 0.9;
     margin-bottom: 0.25rem;
-  }
-  
-  .duration {
+}
+
+.duration {
     font-size: 0.9rem;
     opacity: 0.7;
-  }
-  
-  .description {
+}
+
+.description {
+    font-family: var(--font-family); /* Add this line */
     list-style: none;
     padding: 0;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-  
-  .description li {
+    color: var(--text-color);
+}
+
+.description li {
     padding-left: 1.5rem;
     position: relative;
     line-height: 1.6;
-  }
-  
-  .description li::before {
+}
+
+.description li::before {
     content: "•";
     position: absolute;
     left: 0.5rem;
     opacity: 0.6;
-  }
-  .images {
+}
+
+.images {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
-  }
-  
-  .images img {
+}
+
+.images img {
     width: 100%;
     aspect-ratio: 1 / 1; /* Ensures the image is square */
     object-fit: cover; /* Ensures the image fills the square without distortion */
     border-radius: 8px; /* Optional: Adds rounded corners */
     border: 2px solid var(--text-color); /* Optional: Image border */
     transition: transform 0.3s ease;
-  }
-  
-  .images img:hover {
+}
+
+.images img:hover {
     transform: scale(1.01);
-  }
-  
-  
-  @media (width >= 800px) {
+}
+
+@media (width >= 800px) {
     .container {
-      padding: 4rem;
+        padding: 4rem;
     }
-  
+
     .workContainer {
-      flex-direction: row;
-      gap: 3rem;
+        flex-direction: row;
+        gap: 3rem;
     }
-  
+
     .tabs {
-      min-width: 300px;
+        min-width: 300px;
     }
-  
+
     .content {
-      flex: 1;
+        flex: 1;
     }
-  }
-  
-  @keyframes fadeIn {
+}
+
+@keyframes fadeIn {
     from {
-      opacity: 0;
-      transform: translateY(10px);
+        opacity: 0;
+        transform: translateY(10px);
     }
     to {
-      opacity: 1;
-      transform: translateY(0);
+        opacity: 1;
+        transform: translateY(0);
     }
-  }
+}
