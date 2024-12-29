@@ -3,7 +3,7 @@ import styles from "./Education.module.css";
 function Education() {
   const educationData = [
     {
-      institution: "Universiti Sais Malaysia",
+      institution: "Universiti Sains Malaysia",
       degree: "Bachelor of Computer Science (Honours)(Intelligent Computing)",
       duration: "Oct 2022 - Present",
       achievements: ["Current CGPA: 3.42", "1 Semester Dean List"],
