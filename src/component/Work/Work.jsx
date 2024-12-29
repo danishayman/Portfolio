@@ -14,7 +14,7 @@ function Work() {
                 "Assisted with crowd control, seating, and ensuring compliance with health and safety protocols.",
                 "Managed and operated cinema servers and projectors, ensuring seamless movie playback and minimizing technical disruptions during screenings."
             ],
-            images: ["../src/assets/gsc1.jpg", "../src/assets/gsc2.jpg"]
+            images: ["/src/assets/gsc1.jpg", "/src/assets/gsc2.jpg"]
         },
         {
             role: "Phone Technician",
@@ -25,7 +25,7 @@ function Work() {
                 "Managed inventory of parts and tools, ensuring efficient use of resources and minimizing delays in repairs.",
                 "Provided technical support and customer education on device maintenance and troubleshooting.",
             ],
-            images: ["../src/assets/teenfix1.jpg", "../src/assets/teenfix2.jpg"]
+            images: ["/src/assets/teenfix1.jpg", "/src/assets/teenfix2.jpg"]
         },
     ];
 
