@@ -43,6 +43,10 @@
   padding: 1rem;
 }
 
+.skillList:hover{
+  cursor: default;
+}
+
 .skillList:hover span:not(:hover) {
   opacity: 0.6;
 }

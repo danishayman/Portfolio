@@ -20,6 +20,10 @@
   max-width: 600px;
 }
 
+.timeline:hover{
+  cursor: default;
+}
+
 .timeline::before {
   content: "";
   position: absolute;
