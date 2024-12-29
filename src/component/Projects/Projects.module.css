@@ -20,30 +20,11 @@
     a:hover {
       transform: scale(1.05);
     }
-<<<<<<< HEAD
-  }
-  
-  .projectsContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-  }
-  
-  @media (width >= 800px) {
-    .projectsContainer {
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: space-evenly;
-      padding: 0 30px;
-=======
 
     .projectContainer{
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 30px;
->>>>>>> parent of 10483fb (add responsive styles for Projects component with media queries for improved layout)
     }
-  }
-  
+}
