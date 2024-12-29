@@ -26,6 +26,12 @@ function Projects() {
         h3 = "Law Firm Management" 
         p = "Law Firm Management App using JavaFX"/>
 
+
+        <ProjectCard 
+        src={gasket} link = "https://danishayman.github.io/3D-Sierpinski-Gasket/"
+        h3 = "3D Sierpinski Gasket" 
+        p = "Interactive WebGL application that renders a 3D Sierpinski Gasket"/>
+
       </div>
     </section>
   );
