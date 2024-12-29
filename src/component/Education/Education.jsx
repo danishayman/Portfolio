@@ -3,27 +3,35 @@ import styles from "./Education.module.css";
 function Education() {
   const educationData = [
     {
-      institution: "Universiti Pendidikan Sultan Idris",
-      degree: "Diploma in Computer Science (Internet Computing)",
-      duration: "Jun 2019 - Sep 2021",
+      institution: "Universiti Sais Malaysia",
+      degree: "Bachelor of Computer Science (Honours)(Intelligent Computing)",
+      duration: "Oct 2022 - Present",
       achievements: [
-        "Graduated with grade 3.83",
-        "5 Semester Dean List"
+        "Current CGPA: 3.42",
+        "1 Semester Dean List"
       ]
     },
     {
-      institution: "SM Sains Kubang Pasu",
+        institution: "Penang Matriculation College",
+        degree: "Physical Science",
+        duration: "July 2021 - July 2022",
+        achievements: [
+            "Graduated with grade 3.92",
+        ]
+    },
+    {
+      institution: "SMK Bukit Jambul, High Performance School",
       degree: "Science Stream",
-      duration: "Jan 2014 - Dec 2018",
+      duration: "Jan 2015 - Dec 2020",
       achievements: [
-        "SPM: 2A+ 5A"
+        "SPM: 3A+ 4A",
       ]
     }
   ];
 
   return (
     <section id="education" className={styles.container}>
-      <h2>Education</h2>
+      <h1>Education</h1>
       <div className={styles.timeline}>
         {educationData.map((edu, index) => (
           <div key={index} className={styles.timelineItem}>
