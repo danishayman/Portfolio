@@ -54,7 +54,7 @@ function Hero() {
           majoring in Intelligent Computing, focused on building efficient and 
           user-friendly digital solutions. Always eager to learn and grow through new challenges.</p>
         <a href={CV} download>
-          <button className="hover">Resume</button>
+          <button className="hover">Résumé</button>
         </a>
       </div>
     </section>
