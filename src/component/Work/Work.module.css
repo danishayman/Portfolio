@@ -42,7 +42,7 @@
 
     background-color: var(--card-bg);
     border: 1px solid var(--text-color);
-    box-shadow: 5px 5px grey;
+    box-shadow: 5px 5px var(--box-shadow-color);
     transform: translateX(10px);
 }
 
@@ -57,8 +57,8 @@
 }
 
 .content {
-    border: 2px solid #222;
-    box-shadow: 5px 5px grey;
+    border: 2px solid var(--border-color);
+    box-shadow: 5px 5px var(--box-shadow-color);
     padding: 2rem;
     border-radius: 8px;
     background-color: var(--card-bg);
