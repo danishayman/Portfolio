@@ -43,7 +43,7 @@
   padding: 1rem;
 }
 
-.skillList:hover{
+.skillList:hover {
   cursor: default;
 }
 
@@ -109,8 +109,18 @@ hr:hover {
   animation: fadeIn 0.5s ease-out backwards;
 }
 
-.skillList span:nth-child(1) { animation-delay: 0.1s; }
-.skillList span:nth-child(2) { animation-delay: 0.2s; }
-.skillList span:nth-child(3) { animation-delay: 0.3s; }
-.skillList span:nth-child(4) { animation-delay: 0.4s; }
-.skillList span:nth-child(5) { animation-delay: 0.5s; }
+.skillList span:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.skillList span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.skillList span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.skillList span:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.skillList span:nth-child(5) {
+  animation-delay: 0.5s;
+}
