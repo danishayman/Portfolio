@@ -1,0 +1,125 @@
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: var(--bg-color);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+  }
+  
+  .menuButton {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .menuButton:hover {
+    transform: scale(1.1);
+  }
+  
+  .menuItems {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .navItem {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+    position: relative;
+  }
+  
+  .navItem::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--text-color);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+  
+  .navItem:hover {
+    opacity: 1;
+  }
+  
+  .navItem:hover::after {
+    width: 100%;
+  }
+  
+  .navItem.active {
+    opacity: 1;
+  }
+  
+  .navItem.active::after {
+    width: 100%;
+  }
+  
+  @media (max-width: 768px) {
+    .menuButton {
+      display: block;
+    }
+  
+    .menuItems {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      flex-direction: column;
+      background-color: var(--bg-color);
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+    }
+  
+    .menuItems.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+  
+    .navItem {
+      width: 100%;
+      text-align: center;
+      padding: 0.75rem 2rem;
+    }
+  
+    .navItem::after {
+      display: none;
+    }
+  
+    .navItem:hover {
+      background-color: var(--card-bg);
+    }
+  
+    .navItem.active {
+      background-color: var(--card-bg);
+    }
+  }

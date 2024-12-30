@@ -1,0 +1,76 @@
+import { useState, useEffect } from 'react';
+import styles from './Navigation.module.css';
+import { Menu, X } from 'lucide-react';
+import { useTheme } from '../../common/ThemeContext';
+
+function Navigation() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const { theme, toggleTheme } = useTheme();
+
+  const navItems = [
+    { id: 'hero', label: 'Home' },
+    { id: 'education', label: 'Education' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'work', label: 'Experience' },
+    { id: 'contact', label: 'Contact' },
+  ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = navItems.map(item => document.getElementById(item.id));
+      const scrollPosition = window.scrollY + 100;
+
+      sections.forEach(section => {
+        if (!section) return;
+        
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + section.offsetHeight;
+
+        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+          setActiveSection(section.id);
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setIsMenuOpen(false);
+    }
+  };
+
+  return (
+    <nav className={styles.nav}>
+      <div className={styles.container}>
+        <button 
+          className={styles.menuButton}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        <div className={`${styles.menuItems} ${isMenuOpen ? styles.open : ''}`}>
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              className={`${styles.navItem} ${activeSection === item.id ? styles.active : ''}`}
+              onClick={() => scrollToSection(item.id)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+export default Navigation;

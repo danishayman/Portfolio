@@ -1,4 +1,5 @@
 import "./App.css";
+import Navigation from "./component/Navigation/Navigation";
 import Hero from "./component/Hero/Hero";
 import Education from "./component/Education/Education";
 import Skills from "./component/Skills/Skills";
@@ -10,6 +11,7 @@ import Footer from "./component/Footer/Footer";
 function App() {
   return (
     <>
+      <Navigation />
       <Hero />
       <Education />
       <Skills />
