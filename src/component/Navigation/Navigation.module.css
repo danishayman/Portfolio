@@ -87,6 +87,7 @@
 
 @media (max-width: 768px) {
     .nav {
+        visibility: hidden;
         background: none;
         border: none;
         backdrop-filter: none;
