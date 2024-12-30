@@ -4,6 +4,7 @@ import law from '../../assets/law.png';
 import drink from '../../assets/drink.png';
 import compiler from '../../assets/compiler.png';
 import cervical from '../../assets/cervical.png';
+import tensorflow from '../../assets/tensorflow.png';
 import ProjectCard from '../../common/ProjectCard';
 
 function Projects() {
@@ -41,6 +42,13 @@ function Projects() {
           link="https://github.com/danishayman/Cervical-Cancer-Predictive-Model"
           h3="Cervical Cancer Prediction"
           p="Machine Learning Model"
+        />
+
+        <ProjectCard
+          src={tensorflow}
+          link="https://github.com/danishayman/Low-Level-Tensorflow"
+          h3="Low Level Tensorflow"
+          p="Neural Network Implementation"
         />
       </div>
     </section>
