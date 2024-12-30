@@ -6,7 +6,7 @@ function Education() {
       institution: "Universiti Sains Malaysia",
       degree: "Bachelor of Computer Science (Honours)(Intelligent Computing)",
       duration: "Oct 2022 - Present",
-      achievements: ["Current CGPA: 3.42", "1 Semester Dean List"],
+      achievements: ["Current CGPA: 3.42"],
     },
     {
       institution: "Penang Matriculation College",
