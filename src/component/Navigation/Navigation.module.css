@@ -7,9 +7,8 @@
     background-color: var(--bg-color);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    
 }
-  
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -18,10 +17,8 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    
-    
 }
-  
+
 .menuButton {
     display: none;
     background: none;
@@ -30,18 +27,21 @@
     cursor: pointer;
     padding: 0.5rem;
     transition: transform 0.3s ease;
-    
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1001;
 }
-  
+
 .menuButton:hover {
     transform: scale(1.1);
 }
-  
+
 .menuItems {
     display: flex;
     gap: 2rem;
 }
-  
+
 .navItem {
     background: none;
     border: none;
@@ -53,10 +53,9 @@
     transition: all 0.3s ease;
     opacity: 0.7;
     position: relative;
-    font-family: "Raboto" , sans-serif;
-    
+    font-family: "Raboto";
 }
-  
+
 .navItem::after {
     content: '';
     position: absolute;
@@ -68,32 +67,37 @@
     transition: all 0.3s ease;
     transform: translateX(-50%);
 }
-  
+
 .navItem:hover {
     opacity: 1;
 }
-  
+
 .navItem:hover::after {
     width: 100%;
 }
-  
+
 .navItem.active {
     opacity: 1;
 }
-  
+
 .navItem.active::after {
     width: 100%;
 }
-  
+
 @media (max-width: 768px) {
+    .nav {
+        top: 0;
+        bottom: auto;
+    }
+
     .menuButton {
         display: block;
     }
-  
+
     .menuItems {
-        position: absolute;
-        top: 100%;
-        right: 0;
+        position: fixed;
+        top: 4rem;
+        right: 1rem;
         flex-direction: column;
         background-color: var(--bg-color);
         padding: 1rem;
@@ -103,28 +107,30 @@
         visibility: hidden;
         transform: translateY(-10px);
         transition: all 0.3s ease;
+        width: auto;
+        min-width: 200px;
     }
-  
+
     .menuItems.open {
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
     }
-  
+
     .navItem {
         width: 100%;
         text-align: center;
         padding: 0.75rem 2rem;
     }
-  
+
     .navItem::after {
         display: none;
     }
-  
+
     .navItem:hover {
         background-color: var(--card-bg);
     }
-  
+
     .navItem.active {
         background-color: var(--card-bg);
     }

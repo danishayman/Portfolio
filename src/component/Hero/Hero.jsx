@@ -50,9 +50,9 @@ function Hero() {
             <img src={linkedinIcon} alt="LinkedIn icon" />
           </a>
         </span>
-        <p className={styles.description}>Passionate computer science student 
-          majoring in Intelligent Computing, focused on building efficient and 
-          user-friendly digital solutions. Always eager to learn and grow through new challenges.</p>
+        <p className={styles.description}>A developer majoring in Intelligent Computing 
+          with experience in multiple programming languages. Passionate about creating 
+          impactful digital solutions and tackling new challenges.</p>
         <a href="https://drive.google.com/file/d/1VaSQ44khPcKAmWoRbiue-EN5KnUqDj_Z/view?usp=sharing" target="_blank">
           <button className="hover">Résumé</button>
         </a>
