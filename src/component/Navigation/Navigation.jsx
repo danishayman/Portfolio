@@ -20,7 +20,7 @@ function Navigation() {
   useEffect(() => {
     const handleScroll = () => {
       const sections = navItems.map(item => document.getElementById(item.id));
-      const scrollPosition = window.scrollY + 100;
+      const scrollPosition = window.scrollY + 0;
 
       sections.forEach(section => {
         if (!section) return;
@@ -41,10 +41,19 @@ function Navigation() {
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsMenuOpen(false);
+      
+      const offset = 80; 
+      const elementTop = element.offsetTop - offset;
+  
+      window.scrollTo({
+        top: elementTop,
+        behavior: 'smooth'
+      });
+  
+      setIsMenuOpen(false); // Close the menu after clicking
     }
   };
+  
 
   return (
     <nav className={styles.nav}>
