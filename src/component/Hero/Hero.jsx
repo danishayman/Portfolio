@@ -8,7 +8,6 @@ import linkedinLight from "../../assets/linkedin-light.svg";
 import twitterDark from "../../assets/twitter-dark.svg";
 import githubDark from "../../assets/github-dark.svg";
 import linkedinDark from "../../assets/linkedin-dark.svg";
-import CV from "../../assets/Resume_Danish_Aiman.pdf";
 import { useTheme } from "../../common/ThemeContext";
 
 function Hero() {
@@ -53,7 +52,7 @@ function Hero() {
         <p className={styles.description}>A developer majoring in Intelligent Computing 
           with experience in multiple programming languages. Passionate about creating 
           impactful digital solutions and tackling new challenges.</p>
-        <a href="https://drive.google.com/file/d/1VaSQ44khPcKAmWoRbiue-EN5KnUqDj_Z/view?usp=sharing" target="_blank">
+        <a href="https://drive.google.com/file/d/14GVgNdqkc14YMpFIsHU9g7dlxGCxHLX5/view?usp=sharing" target="_blank">
           <button className="hover">Résumé</button>
         </a>
       </div>
