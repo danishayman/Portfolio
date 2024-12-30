@@ -19,41 +19,53 @@ function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = navItems.map(item => document.getElementById(item.id));
-      const scrollPosition = window.scrollY + 0;
+      const scrollPosition = window.scrollY;
+      const offset = 100; // Adjust this value based on your navbar height
 
-      sections.forEach(section => {
-        if (!section) return;
+      // Get all sections and filter out any null elements
+      const sections = navItems
+        .map(item => document.getElementById(item.id))
+        .filter(Boolean);
+
+      // Find the current section by iterating from bottom to top
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        const sectionTop = section.offsetTop - offset;
         
-        const sectionTop = section.offsetTop;
-        const sectionBottom = sectionTop + section.offsetHeight;
-
-        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+        if (scrollPosition >= sectionTop) {
           setActiveSection(section.id);
+          break;
         }
-      });
+      }
+
+      // Special case for the top of the page
+      if (scrollPosition < sections[0].offsetTop - offset) {
+        setActiveSection('hero');
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
+    // Initial check for active section
+    handleScroll();
+    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
-      
-      const offset = 80; 
-      const elementTop = element.offsetTop - offset;
-  
+      const offset = 80; // This should match your navbar height
+      const elementPosition = element.offsetTop - offset;
+
       window.scrollTo({
-        top: elementTop,
+        top: elementPosition,
         behavior: 'smooth'
       });
-  
-      setIsMenuOpen(false); // Close the menu after clicking
+      
+      setActiveSection(id);
+      setIsMenuOpen(false);
     }
   };
-  
 
   return (
     <nav className={styles.nav}>
