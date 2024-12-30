@@ -9,12 +9,12 @@ function Navigation() {
   const { theme, toggleTheme } = useTheme();
 
   const navItems = [
-    { id: 'hero', label: 'Home' },
-    { id: 'education', label: 'Education' },
-    { id: 'skills', label: 'Skills' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'work', label: 'Experience' },
-    { id: 'contact', label: 'Contact' },
+    { id: 'hero', label: 'HOME' },
+    { id: 'education', label: 'EDUCATION' },
+    { id: 'skills', label: 'SKILLS' },
+    { id: 'projects', label: 'PROJECTS' },
+    { id: 'work', label: 'EXPERIENCE' },
+    { id: 'contact', label: 'CONTACT' },
   ];
 
   useEffect(() => {
