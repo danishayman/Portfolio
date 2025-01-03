@@ -52,7 +52,7 @@ function Hero() {
         <p className={styles.description}>A developer majoring in Intelligent Computing 
           with experience in multiple programming languages. Passionate about creating 
           impactful digital solutions and tackling new challenges.</p>
-        <a href="https://drive.google.com/file/d/14GVgNdqkc14YMpFIsHU9g7dlxGCxHLX5/view?usp=sharing" target="_blank">
+        <a href="https://drive.google.com/file/d/1DehUidxqOZd2xDtxyYtqrXfWjgF6-SHI/view?usp=sharing" target="_blank">
           <button className="hover">Résumé</button>
         </a>
       </div>
