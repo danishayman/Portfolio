@@ -5,9 +5,11 @@ import moon from "../../assets/moon.svg";
 import twitterLight from "../../assets/twitter-light.svg";
 import githubLight from "../../assets/github-light.svg";
 import linkedinLight from "../../assets/linkedin-light.svg";
+import instagramLight from "../../assets/instagram-light.svg";
 import twitterDark from "../../assets/twitter-dark.svg";
 import githubDark from "../../assets/github-dark.svg";
 import linkedinDark from "../../assets/linkedin-dark.svg";
+import instagramDark from "../../assets/instagram-dark.svg";
 import { useTheme } from "../../common/ThemeContext";
 
 function Hero() {
@@ -16,6 +18,7 @@ function Hero() {
   const twitterIcon = theme === "light" ? twitterLight : twitterDark;
   const githubIcon = theme === "light" ? githubLight : githubDark;
   const linkedinIcon = theme === "light" ? linkedinLight : linkedinDark;
+  const instagramIcon = theme === "light" ? instagramLight : instagramDark;
 
   return (
     <section id="hero" className={styles.container}>
@@ -39,8 +42,8 @@ function Hero() {
         <h2>Computer Science Student</h2>
 
         <span>
-          <a href="https://x.com/danish4yman" target="_blank">
-            <img src={twitterIcon} alt="Twitter icon" />
+          <a href="https://www.instagram.com/danishayman/" target="_blank">
+            <img src={instagramIcon} alt="Twitter icon" />
           </a>
           <a href="https://github.com/danishayman/" target="_blank">
             <img src={githubIcon} alt="Github icon" />
