@@ -33,6 +33,16 @@ function Work() {
         },
     ];
 
+    //Preload Images
+    useEffect(() => {
+        workExperience.forEach(work => {
+            work.images.forEach(image => {
+                const img = new Image();
+                img.src = image;
+            });
+        });
+    }, []);
+
     return (
         <section id="work" className={styles.container}>
             <h1>Work Experience</h1>
