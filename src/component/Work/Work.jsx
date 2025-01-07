@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Work.module.css';
 import gsc1 from "../../assets/gsc1.jpg";
 import gsc2 from "../../assets/gsc2.jpg";
