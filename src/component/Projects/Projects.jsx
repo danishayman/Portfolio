@@ -17,7 +17,7 @@ function Projects() {
           src={gasket}
           link="https://danishayman.github.io/3D-Sierpinski-Gasket/"
           h3="3D Sierpinski Gasket"
-          p="Interactive WebGL Application"
+          p="WebGL Application"
         />
         <ProjectCard
           src={law}
@@ -36,7 +36,7 @@ function Projects() {
           src={tensorflow}
           link="https://github.com/danishayman/Low-Level-Tensorflow/blob/main/CPC251_Assignment1_GroupNo.ipynb"
           h3="Low Level Tensorflow"
-          p="Neural Network Implementation"
+          p="Neural Network Model"
         />
 
         <ProjectCard
