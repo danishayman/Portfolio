@@ -1,11 +1,12 @@
-import styles from './Projects.module.css';
-import gasket from '../../assets/gasket.png';
-import law from '../../assets/law.png';
-import drink from '../../assets/drink.png';
-import compiler from '../../assets/compiler.png';
-import cervical from '../../assets/cervical.png';
-import tensorflow from '../../assets/tensorflow.png';
-import ProjectCard from '../../common/ProjectCard';
+import styles from "./Projects.module.css";
+import gasket from "../../assets/gasket.png";
+import law from "../../assets/law.png";
+import drink from "../../assets/drink.png";
+import compiler from "../../assets/compiler.png";
+import cervical from "../../assets/cervical.png";
+import tensorflow from "../../assets/tensorflow.png";
+import creditcard from "../../assets/creditcard.png";
+import ProjectCard from "../../common/ProjectCard";
 
 function Projects() {
   return (
@@ -30,6 +31,21 @@ function Projects() {
           h3="Drink Your Water"
           p="Discord Bot"
         />
+
+        <ProjectCard
+          src={tensorflow}
+          link="https://github.com/danishayman/Low-Level-Tensorflow/blob/main/CPC251_Assignment1_GroupNo.ipynb"
+          h3="Low Level Tensorflow"
+          p="Neural Network Implementation"
+        />
+
+        <ProjectCard
+          src={creditcard}
+          link="https://github.com/danishayman/Credit-Card-Fraud-Detection/blob/main/FraudDetection.ipynb"
+          h3="Credit Card Fraud Detection"
+          p="Machine Learning Model"
+        />
+
         <ProjectCard
           src={compiler}
           link="https://github.com/danishayman/Simple-Compiler"
@@ -39,16 +55,9 @@ function Projects() {
 
         <ProjectCard
           src={cervical}
-          link="https://github.com/danishayman/Cervical-Cancer-Predictive-Model"
+          link="https://github.com/danishayman/Cervical-Cancer-Predictive-Model/blob/main/Project%20Cancer.ipynb"
           h3="Cervical Cancer Prediction"
           p="Machine Learning Model"
-        />
-
-        <ProjectCard
-          src={tensorflow}
-          link="https://github.com/danishayman/Low-Level-Tensorflow"
-          h3="Low Level Tensorflow"
-          p="Neural Network Implementation"
         />
       </div>
     </section>
