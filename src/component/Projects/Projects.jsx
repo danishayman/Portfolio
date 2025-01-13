@@ -6,6 +6,7 @@ import compiler from "../../assets/compiler.png";
 import cervical from "../../assets/cervical.png";
 import tensorflow from "../../assets/tensorflow.png";
 import creditcard from "../../assets/creditcard.png";
+import rainmeter from "../../assets/rainmeter.png";
 import ProjectCard from "../../common/ProjectCard";
 
 function Projects() {
@@ -58,6 +59,13 @@ function Projects() {
           link="https://github.com/danishayman/Cervical-Cancer-Predictive-Model/blob/main/Project%20Cancer.ipynb"
           h3="Cervical Cancer Prediction"
           p="Machine Learning Model"
+        />
+
+        <ProjectCard
+          src={rainmeter}
+          link="https://github.com/danishayman/Code-Geass-Rainmeter"
+          h3="Interactive Rainmeter UI"
+          p="Customized Desktop Interface"
         />
       </div>
     </section>
