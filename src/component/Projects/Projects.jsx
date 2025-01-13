@@ -7,6 +7,7 @@ import cervical from "../../assets/cervical.png";
 import tensorflow from "../../assets/tensorflow.png";
 import creditcard from "../../assets/creditcard.png";
 import rainmeter from "../../assets/rainmeter.png";
+import disk from "../../assets/disk.png";
 import ProjectCard from "../../common/ProjectCard";
 
 function Projects() {
@@ -67,6 +68,14 @@ function Projects() {
           h3="Interactive Rainmeter UI"
           p="Customized Desktop Interface"
         />
+
+        <ProjectCard
+          src={disk}
+          link="https://github.com/danishayman/Disk-Scheduling-Algorithms-Simulation/blob/main/Disk-Scheduling-Simulation.ipynb"
+          h3="Disk Scheduling Analysis"
+          p="OS Performance Visualization"
+        />
+
       </div>
     </section>
   );
