@@ -12,7 +12,7 @@ function Work() {
         {
             role: "Part-Time Crew: Steward",
             company: "Golden Screen Cinemas",
-            duration: "August 2024 - Present",
+            duration: "August 2024 - December 2024",
             description: [
                 "Provided exceptional customer service, ensuring a positive movie-going experience for customers.",
                 "Assisted with crowd control, seating, and ensuring compliance with health and safety protocols.",
