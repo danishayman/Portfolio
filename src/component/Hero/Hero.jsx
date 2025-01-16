@@ -42,11 +42,11 @@ function Hero() {
         <h2>Computer Science Student</h2>
 
         <span>
-          <a href="https://www.instagram.com/danishayman/" target="_blank">
+          <a href="https://www.instagram.com" target="_blank">
             <img src={instagramIcon} alt="Twitter icon" />
           </a>
           <a href="https://github.com/danishayman/" target="_blank">
-            <img src={githubIcon} alt="Github icon" />
+            <img src={githubIcon} alt="Github icon" />s
           </a>
           <a href="https://www.linkedin.com/in/danishayman/" target="_blank">
             <img src={linkedinIcon} alt="LinkedIn icon" />
