@@ -46,7 +46,7 @@ function Hero() {
             <img src={instagramIcon} alt="Twitter icon" />
           </a>
           <a href="https://github.com/danishayman/" target="_blank">
-            <img src={githubIcon} alt="Github icon" />s
+            <img src={githubIcon} alt="Github icon" />
           </a>
           <a href="https://www.linkedin.com/in/danishayman/" target="_blank">
             <img src={linkedinIcon} alt="LinkedIn icon" />
