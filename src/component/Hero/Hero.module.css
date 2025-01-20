@@ -65,7 +65,9 @@
     position: absolute;
     right: 10;
     width: 25px;
+    height: 25px;
     -webkit-tap-highlight-color: transparent;
+    object-fit: contain;
   }
   
   .colorMode:hover {
