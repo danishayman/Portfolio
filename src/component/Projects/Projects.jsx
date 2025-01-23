@@ -49,13 +49,6 @@ function Projects() {
         />
 
         <ProjectCard
-          src={compiler}
-          link="https://github.com/danishayman/Simple-Compiler"
-          h3="MiniLang"
-          p="A Simple Compiler"
-        />
-
-        <ProjectCard
           src={cervical}
           link="https://github.com/danishayman/Cervical-Cancer-Predictive-Model/blob/main/Project%20Cancer.ipynb"
           h3="Cervical Cancer Prediction"
@@ -67,13 +60,6 @@ function Projects() {
           link="https://github.com/danishayman/Code-Geass-Rainmeter"
           h3="Interactive Rainmeter UI"
           p="Customized Desktop Interface"
-        />
-
-        <ProjectCard
-          src={disk}
-          link="https://github.com/danishayman/Disk-Scheduling-Algorithms-Simulation/blob/main/Disk-Scheduling-Simulation.ipynb"
-          h3="Disk Scheduling Analysis"
-          p="OS Performance Visualization"
         />
 
       </div>
