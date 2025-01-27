@@ -42,7 +42,7 @@ function Hero() {
         <h2>Computer Science Student</h2>
 
         <span>
-          <a href="https://www.instagram.com" target="_blank">
+          <a href="https://www.instagram.com/danishayman/" target="_blank">
             <img src={instagramIcon} alt="Twitter icon" />
           </a>
           <a href="https://github.com/danishayman/" target="_blank">
