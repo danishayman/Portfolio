@@ -8,6 +8,7 @@ import tensorflow from "../../assets/tensorflow.png";
 import creditcard from "../../assets/creditcard.png";
 import rainmeter from "../../assets/rainmeter.png";
 import disk from "../../assets/disk.png";
+import teapot from "../../assets/teapot.png";
 import ProjectCard from "../../common/ProjectCard";
 
 function Projects() {
@@ -60,6 +61,13 @@ function Projects() {
           link="https://github.com/danishayman/Code-Geass-Rainmeter"
           h3="Interactive Rainmeter UI"
           p="Customized Desktop Interface"
+        />
+
+        <ProjectCard
+          src={teapot}
+          link="https://danishayman.github.io/WebGL-Objects/"
+          h3 = "WebGL Objects"
+          p = "WebGL Application"
         />
 
       </div>
