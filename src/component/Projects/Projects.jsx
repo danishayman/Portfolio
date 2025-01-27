@@ -19,6 +19,7 @@ function Projects() {
       <div className={styles.projectContainer}>
 
 
+
         <ProjectCard
           src={teapot}
           link="https://danishayman.github.io/WebGL-Objects/"
