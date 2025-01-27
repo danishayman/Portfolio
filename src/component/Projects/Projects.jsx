@@ -9,7 +9,7 @@ import creditcard from "../../assets/creditcard.png";
 import rainmeter from "../../assets/rainmeter.png";
 import disk from "../../assets/disk.png";
 import teapot from "../../assets/teapot.png";
-import Speaker from "../../assets/Speaker.png";
+import Speaker from "../../assets/speaker.png";
 import ProjectCard from "../../common/ProjectCard";
 
 function Projects() {
