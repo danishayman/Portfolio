@@ -66,7 +66,7 @@ function Projects() {
         <ProjectCard
           src={teapot}
           link="https://danishayman.github.io/WebGL-Objects/"
-          h3 = "WebGL Objects"
+          h3 = "Interactive 3D Objects"
           p = "WebGL Application"
         />
 
