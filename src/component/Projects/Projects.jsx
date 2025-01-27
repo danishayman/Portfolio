@@ -9,6 +9,7 @@ import creditcard from "../../assets/creditcard.png";
 import rainmeter from "../../assets/rainmeter.png";
 import disk from "../../assets/disk.png";
 import teapot from "../../assets/teapot.png";
+import Speaker from "../../assets/Speaker.png";
 import ProjectCard from "../../common/ProjectCard";
 
 function Projects() {
@@ -16,6 +17,22 @@ function Projects() {
     <section id="projects" className={styles.container}>
       <h1 className="sectionTitle">Projects</h1>
       <div className={styles.projectContainer}>
+
+
+        <ProjectCard
+          src={teapot}
+          link="https://danishayman.github.io/WebGL-Objects/"
+          h3="Interactive 3D Objects"
+          p="WebGL Application"
+        />
+
+        <ProjectCard
+          src={Speaker}
+          link="https://github.com/danishayman/Speaker-Change-Detection/blob/main/Speaker-Change-Detection.ipynb"
+          h3="Speaker Change Detection"
+          p="Neural Network Model"
+        />
+
         <ProjectCard
           src={gasket}
           link="https://danishayman.github.io/3D-Sierpinski-Gasket/"
@@ -63,12 +80,6 @@ function Projects() {
           p="Customized Desktop Interface"
         />
 
-        <ProjectCard
-          src={teapot}
-          link="https://danishayman.github.io/WebGL-Objects/"
-          h3 = "Interactive 3D Objects"
-          p = "WebGL Application"
-        />
 
       </div>
     </section>
