@@ -75,13 +75,6 @@ function Projects() {
           p="Machine Learning Model"
         />
 
-        <ProjectCard
-          src={rainmeter}
-          link="https://github.com/danishayman/Code-Geass-Rainmeter"
-          h3="Interactive Rainmeter UI"
-          p="Customized Desktop Interface"
-        />
-
 
       </div>
     </section>
