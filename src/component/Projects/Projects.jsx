@@ -10,6 +10,7 @@ import rainmeter from "../../assets/rainmeter.png";
 import disk from "../../assets/disk.png";
 import teapot from "../../assets/teapot.png";
 import Speaker from "../../assets/speaker.png";
+import Bird from "../../assets/bird.png";
 import ProjectCard from "../../common/ProjectCard";
 
 function Projects() {
@@ -18,6 +19,14 @@ function Projects() {
       <h1 className="sectionTitle">Projects</h1>
       <div className={styles.projectContainer}>
 
+
+
+        <ProjectCard
+          src={Bird}
+          link="https://github.com/danishayman/Flappy-Bird-AI"
+          h3="Flappy Bird AI"
+          p="Neural Network Model"
+        />
 
 
         <ProjectCard
