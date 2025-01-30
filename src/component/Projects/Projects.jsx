@@ -31,7 +31,7 @@ function Projects() {
 
         <ProjectCard
           src={teapot}
-          link="https://danishayman.github.io/WebGL-Objects/"
+          link="https://danishayman.github.io/3D-Objects-Playground/"
           h3="3D Objects Playground"
           p="WebGL Application"
         />
