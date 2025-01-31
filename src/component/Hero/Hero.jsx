@@ -57,7 +57,7 @@ function Hero() {
           Learning and Artificial Intelligence.
         </p>
         <a
-          href="https://drive.google.com/file/d/1gR4oHjDlUIkiE8C9-45DeFh6Izyf_OsH/view?usp=sharing"
+          href="https://drive.google.com/file/d/1WB78F_VD8KHTr1DR3ut59wRJ7UztSynm/view?usp=sharing"
           target="_blank"
         >
           <button className="hover">Résumé</button>
