@@ -54,7 +54,7 @@
     transition: all 0.3s ease;
     opacity: 0.7;
     position: relative;
-    font-family: "Space Grotesk", monospace;
+    font-family: "Roboto Mono", monospace;
 }
 
 .navItem::after {
