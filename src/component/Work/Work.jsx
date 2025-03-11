@@ -9,9 +9,10 @@ import inari2 from "../../assets/inari2.jpg";
 
 function Work() {
     const [activeTab, setActiveTab] = useState(0);
+    const [imagesLoaded, setImagesLoaded] = useState({});
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
 
     const workExperience = [
-
         {
             role: "Full Stack Developer Intern",
             company: "Inari Technology",
@@ -23,7 +24,6 @@ function Work() {
             ],
             images: [inari1, inari2]
         },
-
         {
             role: "Part-Time Crew: Steward",
             company: "Golden Screen Cinemas",
@@ -35,7 +35,6 @@ function Work() {
             ],
             images: [gsc1, gsc2]
         },
-
         {
             role: "Phone Technician",
             company: "Teenfix Studio",
@@ -49,15 +48,44 @@ function Work() {
         },
     ];
 
-    //Preload Images
+    // Improved image preloading
     useEffect(() => {
-        workExperience.forEach(work => {
-            work.images.forEach(image => {
-                const img = new Image();
-                img.src = image;
+        const loadImages = async () => {
+            const loadPromises = {};
+            
+            // Create a promise for each image
+            workExperience.forEach((work, workIndex) => {
+                loadPromises[workIndex] = Promise.all(
+                    work.images.map(imageSrc => {
+                        return new Promise((resolve) => {
+                            const img = new Image();
+                            img.onload = () => resolve();
+                            img.onerror = () => resolve(); // Still resolve even on error to prevent hanging
+                            img.src = imageSrc;
+                        });
+                    })
+                );
             });
-        });
+            
+            // Mark each work experience's images as loaded when they finish
+            for (const [workIndex, promise] of Object.entries(loadPromises)) {
+                await promise;
+                setImagesLoaded(prev => ({
+                    ...prev,
+                    [workIndex]: true
+                }));
+            }
+            
+            setIsFirstLoad(false);
+        };
+        
+        loadImages();
     }, []);
+
+    // Handle tab change
+    const handleTabChange = (index) => {
+        setActiveTab(index);
+    };
 
     return (
         <section id="work" className={styles.container}>
@@ -69,7 +97,7 @@ function Work() {
                         <div
                             key={index}
                             className={`${styles.tab} ${activeTab === index ? styles.active : ''}`}
-                            onClick={() => setActiveTab(index)}
+                            onClick={() => handleTabChange(index)}
                         >
                             <h3>{work.role}</h3>
                             <p>{work.company}</p>
@@ -85,7 +113,17 @@ function Work() {
                     </div>
                     <div className={styles.images}>
                         {workExperience[activeTab].images.map((image, index) => (
-                            <img key={index} src={image} alt={`${workExperience[activeTab].role} ${index + 1}`} className={styles.image} />
+                            <div key={index} className={styles.imageContainer}>
+                                {(!imagesLoaded[activeTab] && isFirstLoad) ? (
+                                    <div className={styles.imagePlaceholder}>Loading...</div>
+                                ) : (
+                                    <img 
+                                        src={image} 
+                                        alt={`${workExperience[activeTab].role} ${index + 1}`} 
+                                        className={styles.image} 
+                                    />
+                                )}
+                            </div>
                         ))}
                     </div>
                     <ul className={styles.description}>
