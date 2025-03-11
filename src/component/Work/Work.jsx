@@ -4,11 +4,26 @@ import gsc1 from "../../assets/gsc1.jpg";
 import gsc2 from "../../assets/gsc2.jpg";
 import teenfix1 from "../../assets/teenfix1.jpg";
 import teenfix2 from "../../assets/teenfix2.jpg";
+import inari1 from "../../assets/inari1.jpg";
+import inari2 from "../../assets/inari2.jpg";
 
 function Work() {
     const [activeTab, setActiveTab] = useState(0);
 
     const workExperience = [
+
+        {
+            role: "Full Stack Developer Intern",
+            company: "Inari Technology",
+            duration: "March 2025 - Present",
+            description: [
+                "Developed and maintained software applications for internal use, improving operational efficiency and data accuracy.",
+                "Collaborated with cross-functional teams to identify and address software bugs and performance issues.",
+                "Participated in code reviews and testing to ensure high-quality software deliverables.",
+            ],
+            images: [inari1, inari2]
+        },
+
         {
             role: "Part-Time Crew: Steward",
             company: "Golden Screen Cinemas",
@@ -20,6 +35,7 @@ function Work() {
             ],
             images: [gsc1, gsc2]
         },
+
         {
             role: "Phone Technician",
             company: "Teenfix Studio",
