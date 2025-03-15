@@ -18,9 +18,9 @@ function Work() {
             company: "Inari Technology",
             duration: "March 2025 - Present",
             description: [
-                "Developed and maintained software applications for internal use, improving operational efficiency and data accuracy.",
-                "Collaborated with cross-functional teams to identify and address software bugs and performance issues.",
-                "Participated in code reviews and testing to ensure high-quality software deliverables.",
+                "Developed and maintained internal software for efficiency and accuracy.",
+                "Fixed bugs and optimized performance with cross-functional teams.",
+                "Conducted code reviews and testing for quality assurance.",
             ],
             images: [inari1, inari2]
         },
@@ -29,9 +29,9 @@ function Work() {
             company: "Golden Screen Cinemas",
             duration: "August 2024 - December 2024",
             description: [
-                "Provided exceptional customer service, ensuring a positive movie-going experience for customers.",
-                "Assisted with crowd control, seating, and ensuring compliance with health and safety protocols.",
-                "Managed and operated cinema servers and projectors, ensuring seamless movie playback and minimizing technical disruptions during screenings."
+                "Delivered excellent customer service for a smooth movie-going experience.",
+                "Assisted with crowd control, seating, and safety compliance.",
+                "Operated servers and projectors for seamless screenings."
             ],
             images: [gsc1, gsc2]
         },
@@ -40,9 +40,10 @@ function Work() {
             company: "Teenfix Studio",
             duration: "August 2023 - November 2023",
             description: [
-                "Diagnosed and repaired smartphones and tablets, ensuring fast service and high customer satisfaction.",
-                "Managed inventory of parts and tools, ensuring efficient use of resources and minimizing delays in repairs.",
-                "Provided technical support and customer education on device maintenance and troubleshooting.",
+                "Repaired smartphones and tablets with quick, high-quality service.",
+                "Managed inventory for efficient repairs.",
+                "Provided technical support and device maintenance guidance."
+
             ],
             images: [teenfix1, teenfix2]
         },
