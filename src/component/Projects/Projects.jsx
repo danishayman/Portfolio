@@ -10,7 +10,8 @@ import rainmeter from "../../assets/rainmeter.png";
 import disk from "../../assets/disk.png";
 import teapot from "../../assets/teapot.png";
 import Speaker from "../../assets/speaker.png";
-import Bird from "../../assets/bird.png";
+import bird from "../../assets/bird.png";
+import extinguisher from "../../assets/extinguisher.png";
 import ProjectCard from "../../common/ProjectCard";
 
 function Projects() {
@@ -19,8 +20,15 @@ function Projects() {
       <h1 className="sectionTitle">Projects</h1>
       <div className={styles.projectContainer}>
 
+      <ProjectCard
+          src={extinguisher}
+          link="https://github.com/danishayman/FireExtinguisherTrackingSystem"
+          h3="Fire Extinguisher Tracking System (In Progress)"
+          p=".NET Application "
+        />
+
         <ProjectCard
-          src={Bird}
+          src={bird}
           link="https://github.com/danishayman/Flappy-Bird-AI"
           h3="Flappy Bird AI"
           p="Neural Network Model"
