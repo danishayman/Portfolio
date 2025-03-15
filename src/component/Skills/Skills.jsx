@@ -29,6 +29,8 @@ import nodeIconDark from "../../assets/node-dark.svg";
 import nodeIconLight from "../../assets/node-light.svg";
 import csharpIconDark from "../../assets/csharp-dark.svg"; // Add C# icon
 import csharpIconLight from "../../assets/csharp-light.svg"; // Add C# icon
+import aspnetIconLight from "../../assets/aspnet-light.svg"
+import aspnetIconDark from "../../assets/aspnet-dark.svg"
 import SkillList from "../../common/SkillList";
 import { useTheme } from "../../common/ThemeContext";
 
@@ -51,7 +53,9 @@ function Skills() {
     scikitLearn: theme === "light" ? scikitLearnIconLight : scikitLearnIconDark,
     react: theme === "light" ? reactIconLight : reactIconDark,
     node: theme === "light" ? nodeIconLight : nodeIconDark,
-    csharp: theme === "light" ? csharpIconLight : csharpIconDark
+    csharp: theme === "light" ? csharpIconLight : csharpIconDark,
+    aspnet: theme === "light" ? aspnetIconLight : aspnetIconDark
+
     
   };
 
@@ -64,6 +68,9 @@ function Skills() {
         <SkillList src={icons.javascript} skill="JavaScript" />
         <SkillList src={icons.react} skill="React.js" />
         <SkillList src={icons.node} skill="Node.js" />
+        <SkillList src={icons.aspnet} skill="ASP.NET" />
+        
+        
       </div>
       <hr />
       <div className={styles.skillList}>
