@@ -31,7 +31,7 @@ function Navigation() {
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = sections[i];
         const sectionTop = section.offsetTop - offset;
-        
+
         if (scrollPosition >= sectionTop) {
           setActiveSection(section.id);
           break;
@@ -47,7 +47,7 @@ function Navigation() {
     window.addEventListener('scroll', handleScroll);
     // Initial check for active section
     handleScroll();
-    
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -61,7 +61,7 @@ function Navigation() {
         top: elementPosition,
         behavior: 'smooth'
       });
-      
+
       setActiveSection(id);
       setIsMenuOpen(false);
     }
@@ -70,7 +70,7 @@ function Navigation() {
   return (
     <nav className={styles.nav}>
       <div className={styles.container}>
-        <button 
+        <button
           className={styles.menuButton}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"

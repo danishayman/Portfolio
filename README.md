@@ -36,27 +36,9 @@ This portfolio is built with **React.js**, styled with modern CSS libraries, and
 └── vite.config.js
 ```
 
-## 📦 Installation & Setup
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/danishayman/Portfolio.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd Portfolio
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
 ## 🚀 Deployment
-This project is deployed on **[Deployment Platform]**. You can view it live here:
-👉 [Live Demo](https://danishaiman.netlify.app/)
+This project is deployed on **Netlify**. You can view it live here:
+👉 [Live Demo](https://danishaiman.com)
 
 ## 🤝 Contributing
 Contributions are welcome! If you find bugs or have suggestions, feel free to open an issue or submit a pull request.
@@ -64,8 +46,6 @@ Contributions are welcome! If you find bugs or have suggestions, feel free to op
 ## 📬 Contact
 - **Email:** danishaiman@student.usm.my
 - **LinkedIn:** [danishayman](https://www.linkedin.com/in/danishayman/)
-
-
 
 
 

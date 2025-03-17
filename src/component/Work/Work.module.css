@@ -121,10 +121,14 @@
 
 .images img {
     width: 100%;
-    aspect-ratio: 1 / 1; /* Ensures the image is square */
-    object-fit: cover; /* Ensures the image fills the square without distortion */
-    border-radius: 8px; /* Optional: Adds rounded corners */
-    border: 2px solid var(--text-color); /* Optional: Image border */
+    aspect-ratio: 1 / 1;
+    /* Ensures the image is square */
+    object-fit: cover;
+    /* Ensures the image fills the square without distortion */
+    border-radius: 8px;
+    /* Optional: Adds rounded corners */
+    border: 2px solid var(--text-color);
+    /* Optional: Image border */
     transition: transform 0.3s ease;
 }
 
@@ -132,7 +136,7 @@
     transform: scale(1.01);
 }
 
-@media (width >= 800px) {
+@media (width >=800px) {
     .container {
         padding: 4rem;
     }
@@ -156,6 +160,7 @@
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);

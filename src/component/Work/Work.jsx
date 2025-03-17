@@ -53,7 +53,7 @@ function Work() {
     useEffect(() => {
         const loadImages = async () => {
             const loadPromises = {};
-            
+
             // Create a promise for each image
             workExperience.forEach((work, workIndex) => {
                 loadPromises[workIndex] = Promise.all(
@@ -67,7 +67,7 @@ function Work() {
                     })
                 );
             });
-            
+
             // Mark each work experience's images as loaded when they finish
             for (const [workIndex, promise] of Object.entries(loadPromises)) {
                 await promise;
@@ -76,10 +76,10 @@ function Work() {
                     [workIndex]: true
                 }));
             }
-            
+
             setIsFirstLoad(false);
         };
-        
+
         loadImages();
     }, []);
 
@@ -91,7 +91,7 @@ function Work() {
     return (
         <section id="work" className={styles.container}>
             <h1>Work Experience</h1>
-            
+
             <div className={styles.workContainer}>
                 <div className={styles.tabs}>
                     {workExperience.map((work, index) => (
@@ -118,10 +118,10 @@ function Work() {
                                 {(!imagesLoaded[activeTab] && isFirstLoad) ? (
                                     <div className={styles.imagePlaceholder}>Loading...</div>
                                 ) : (
-                                    <img 
-                                        src={image} 
-                                        alt={`${workExperience[activeTab].role} ${index + 1}`} 
-                                        className={styles.image} 
+                                    <img
+                                        src={image}
+                                        alt={`${workExperience[activeTab].role} ${index + 1}`}
+                                        className={styles.image}
                                     />
                                 )}
                             </div>

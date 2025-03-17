@@ -66,7 +66,7 @@ hr:hover {
   opacity: 1;
 }
 
-@media (width >= 800px) {
+@media (width >=800px) {
   .container {
     padding: 4rem;
   }
@@ -94,6 +94,7 @@ hr:hover {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -112,15 +113,19 @@ hr:hover {
 .skillList span:nth-child(1) {
   animation-delay: 0.1s;
 }
+
 .skillList span:nth-child(2) {
   animation-delay: 0.2s;
 }
+
 .skillList span:nth-child(3) {
   animation-delay: 0.3s;
 }
+
 .skillList span:nth-child(4) {
   animation-delay: 0.4s;
 }
+
 .skillList span:nth-child(5) {
   animation-delay: 0.5s;
 }

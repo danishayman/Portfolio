@@ -2,12 +2,9 @@ import styles from "./Projects.module.css";
 import gasket from "../../assets/gasket.png";
 import law from "../../assets/law.png";
 import drink from "../../assets/drink.png";
-import compiler from "../../assets/compiler.png";
 import cervical from "../../assets/cervical.png";
 import tensorflow from "../../assets/tensorflow.png";
 import creditcard from "../../assets/creditcard.png";
-import rainmeter from "../../assets/rainmeter.png";
-import disk from "../../assets/disk.png";
 import teapot from "../../assets/teapot.png";
 import Speaker from "../../assets/speaker.png";
 import bird from "../../assets/bird.png";
@@ -20,11 +17,11 @@ function Projects() {
       <h1 className="sectionTitle">Projects</h1>
       <div className={styles.projectContainer}>
 
-      <ProjectCard
+        <ProjectCard
           src={extinguisher}
           link="https://github.com/danishayman/FireExtinguisherTrackingSystem"
           h3="Fire Extinguisher Tracking System"
-          p={<>.NET Application<br/>(In Progress)</>}
+          p={<>.NET Application<br />(In Progress)</>}
         />
 
         <ProjectCard
