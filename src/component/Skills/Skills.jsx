@@ -63,7 +63,6 @@ function Skills() {
       <div className={styles.skillList}>
         <SkillList src={icons.html} skill="HTML" />
         <SkillList src={icons.css} skill="CSS" />
-        <SkillList src={icons.javascript} skill="JavaScript" />
         <SkillList src={icons.react} skill="React.js" />
         <SkillList src={icons.node} skill="Node.js" />
         <SkillList src={icons.aspnet} skill="ASP.NET" />
@@ -73,6 +72,7 @@ function Skills() {
         <SkillList src={icons.python} skill="Python" />
         <SkillList src={icons.java} skill="Java" />
         <SkillList src={icons.cpp} skill="C++" />
+        <SkillList src={icons.javascript} skill="JavaScript" />
         <SkillList src={icons.sql} skill="SQL" />
         <SkillList src={icons.csharp} skill="C#" />
       </div>
