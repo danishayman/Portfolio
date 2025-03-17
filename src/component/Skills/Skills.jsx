@@ -27,10 +27,12 @@ import reactIconDark from "../../assets/react-dark.svg";
 import reactIconLight from "../../assets/react-light.svg";
 import nodeIconDark from "../../assets/node-dark.svg";
 import nodeIconLight from "../../assets/node-light.svg";
-import csharpIconDark from "../../assets/csharp-dark.svg"; // Add C# icon
-import csharpIconLight from "../../assets/csharp-light.svg"; // Add C# icon
+import csharpIconDark from "../../assets/csharp-dark.svg";
+import csharpIconLight from "../../assets/csharp-light.svg";
 import aspnetIconLight from "../../assets/aspnet-light.svg";
 import aspnetIconDark from "../../assets/aspnet-dark.svg";
+import rIconLight from "../../assets/r-light.svg";
+import rIconDark from "../../assets/r-dark.svg";
 import SkillList from "../../common/SkillList";
 import { useTheme } from "../../common/ThemeContext";
 
@@ -55,6 +57,7 @@ function Skills() {
     node: theme === "light" ? nodeIconLight : nodeIconDark,
     csharp: theme === "light" ? csharpIconLight : csharpIconDark,
     aspnet: theme === "light" ? aspnetIconLight : aspnetIconDark,
+    r: theme === "light" ? rIconLight : rIconDark,
   };
 
   return (
@@ -71,6 +74,7 @@ function Skills() {
       <div className={styles.skillList}>
         <SkillList src={icons.python} skill="Python" />
         <SkillList src={icons.java} skill="Java" />
+        <SkillList src={icons.r} skill="R" />
         <SkillList src={icons.cpp} skill="C++" />
         <SkillList src={icons.javascript} skill="JavaScript" />
         <SkillList src={icons.sql} skill="SQL" />
