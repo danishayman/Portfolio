@@ -4,7 +4,7 @@ function Education() {
   const educationData = [
     {
       institution: "Universiti Sains Malaysia",
-      degree: "Bachelor of Computer Science (Honours) (Intelligent Computing)",
+      degree: "Bachelor of Computer Science (Honours)\n(Intelligent Computing)",
       duration: "Oct 2022 - Present",
       achievements: ["Current CGPA: 3.42"],
     },

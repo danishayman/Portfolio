@@ -23,8 +23,8 @@ function Projects() {
       <ProjectCard
           src={extinguisher}
           link="https://github.com/danishayman/FireExtinguisherTrackingSystem"
-          h3="Fire Extinguisher Tracking System (In Progress)"
-          p=".NET Application "
+          h3="Fire Extinguisher Tracking System"
+          p={<>.NET Application<br/>(In Progress)</>}
         />
 
         <ProjectCard

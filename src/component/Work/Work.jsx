@@ -14,7 +14,7 @@ function Work() {
 
     const workExperience = [
         {
-            role: "Full Stack Developer Intern",
+            role: "Software Engineer Intern",
             company: "Inari Technology",
             duration: "March 2025 - Present",
             description: [
