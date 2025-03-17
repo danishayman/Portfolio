@@ -52,31 +52,30 @@ function Work() {
     // Improved image preloading
     useEffect(() => {
         const loadImages = async () => {
-            const loadPromises = {};
+            // Start loading all images immediately
+            const allImagePromises = workExperience.flatMap((work, workIndex) => 
+                work.images.map(imageSrc => {
+                    return new Promise((resolve) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            // Mark individual image as loaded
+                            setImagesLoaded(prev => ({
+                                ...prev,
+                                [workIndex]: {
+                                    ...(prev[workIndex] || {}),
+                                    [imageSrc]: true
+                                }
+                            }));
+                            resolve();
+                        };
+                        img.onerror = () => resolve(); // Still resolve even on error
+                        img.src = imageSrc;
+                    });
+                })
+            );
 
-            // Create a promise for each image
-            workExperience.forEach((work, workIndex) => {
-                loadPromises[workIndex] = Promise.all(
-                    work.images.map(imageSrc => {
-                        return new Promise((resolve) => {
-                            const img = new Image();
-                            img.onload = () => resolve();
-                            img.onerror = () => resolve(); // Still resolve even on error to prevent hanging
-                            img.src = imageSrc;
-                        });
-                    })
-                );
-            });
-
-            // Mark each work experience's images as loaded when they finish
-            for (const [workIndex, promise] of Object.entries(loadPromises)) {
-                await promise;
-                setImagesLoaded(prev => ({
-                    ...prev,
-                    [workIndex]: true
-                }));
-            }
-
+            // Wait for all images to load, then mark first load complete
+            await Promise.all(allImagePromises);
             setIsFirstLoad(false);
         };
 
@@ -115,7 +114,7 @@ function Work() {
                     <div className={styles.images}>
                         {workExperience[activeTab].images.map((image, index) => (
                             <div key={index} className={styles.imageContainer}>
-                                {(!imagesLoaded[activeTab] && isFirstLoad) ? (
+                                {(!imagesLoaded[activeTab]?.[image] && isFirstLoad) ? (
                                     <div className={styles.imagePlaceholder}>Loading...</div>
                                 ) : (
                                     <img
