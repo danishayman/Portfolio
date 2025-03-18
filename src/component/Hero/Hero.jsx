@@ -27,6 +27,19 @@ function Hero() {
   const flipTimeoutRef = useRef(null);
   const animationEndedRef = useRef(null);
 
+  // Preload images
+  const preloadImages = (images) => {
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  };
+
+  useEffect(() => {
+    // Preload images when the component mounts
+    preloadImages([heroImg, lelouchImg, sun, moon, twitterLight, githubLight, linkedinLight, instagramLight, twitterDark, githubDark, linkedinDark, instagramDark]);
+  }, []);
+
   // Handle image swap during flip animation
   useEffect(() => {
     if (isFlipping) {
