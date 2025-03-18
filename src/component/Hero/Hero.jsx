@@ -1,5 +1,6 @@
 import styles from "./Hero.module.css";
 import heroImg from "../../assets/hero.png";
+import lelouchImg from "../../assets/lelouch.png";
 import sun from "../../assets/sun.svg";
 import moon from "../../assets/moon.svg";
 import twitterLight from "../../assets/twitter-light.svg";
@@ -11,6 +12,7 @@ import githubDark from "../../assets/github-dark.svg";
 import linkedinDark from "../../assets/linkedin-dark.svg";
 import instagramDark from "../../assets/instagram-dark.svg";
 import { useTheme } from "../../common/ThemeContext";
+import { useState, useEffect, useRef } from "react";
 
 function Hero() {
   const { theme, toggleTheme } = useTheme();
@@ -19,17 +21,54 @@ function Hero() {
   const githubIcon = theme === "light" ? githubLight : githubDark;
   const linkedinIcon = theme === "light" ? linkedinLight : linkedinDark;
   const instagramIcon = theme === "light" ? instagramLight : instagramDark;
+  
+  const [isFlipping, setIsFlipping] = useState(false);
+  const [currentImage, setCurrentImage] = useState(theme === "light" ? heroImg : lelouchImg);
+  const flipTimeoutRef = useRef(null);
+  const animationEndedRef = useRef(null);
+
+  // Handle image swap during flip animation
+  useEffect(() => {
+    if (isFlipping) {
+      // Clear any existing timeouts
+      if (flipTimeoutRef.current) clearTimeout(flipTimeoutRef.current);
+      
+      // Set the new image halfway through the animation
+      flipTimeoutRef.current = setTimeout(() => {
+        setCurrentImage(theme === "light" ? heroImg : lelouchImg);
+      }, 250); // Adjusted to match the animation midpoint
+      
+      // End animation after its complete duration
+      animationEndedRef.current = setTimeout(() => {
+        setIsFlipping(false);
+      }, 500); // Match the full animation duration
+      
+      return () => {
+        clearTimeout(flipTimeoutRef.current);
+        clearTimeout(animationEndedRef.current);
+      };
+    }
+  }, [isFlipping, theme]);
+
+  const handleThemeToggle = () => {
+    if (!isFlipping) {
+      setIsFlipping(true);
+      toggleTheme();
+    }
+  };
 
   return (
     <section id="hero" className={styles.container}>
       <div className={styles.colorModeContainer}>
-        <img className={styles.hero} src={heroImg} alt="Profile picture" />
+        <div className={`${styles.imageContainer} ${isFlipping ? styles.flipping : ""}`}>
+          <img className={styles.hero} src={currentImage} alt="Profile picture" />
+        </div>
 
         <img
           className={styles.colorMode}
           src={themeIcon}
           alt="Colour mode icon"
-          onClick={toggleTheme}
+          onClick={handleThemeToggle}
         />
       </div>
       <div className={styles.info}>
@@ -43,7 +82,7 @@ function Hero() {
 
         <span>
           <a href="https://www.instagram.com/danishayman/" target="_blank">
-            <img src={instagramIcon} alt="Twitter icon" />
+            <img src={instagramIcon} alt="Instagram icon" />
           </a>
           <a href="https://github.com/danishayman/" target="_blank">
             <img src={githubIcon} alt="Github icon" />
