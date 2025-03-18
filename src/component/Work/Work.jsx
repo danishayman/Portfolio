@@ -16,7 +16,7 @@ function Work() {
         {
             role: "Software Engineer Intern",
             company: "Inari Technology",
-            duration: "March 2025 - Present",
+            duration: "February 2025 - Present",
             description: [
                 "Developed and maintained internal software for efficiency and accuracy.",
                 "Fixed bugs and optimized performance with cross-functional teams.",
