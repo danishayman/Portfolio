@@ -37,10 +37,10 @@
   justify-content: space-evenly;
   align-self: center;
   flex-wrap: wrap;
-  row-gap: 40px;
+  row-gap: 20px;
   max-width: 26ch;
   position: relative;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .skillList:hover {

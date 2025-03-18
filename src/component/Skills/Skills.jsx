@@ -33,6 +33,8 @@ import aspnetIconLight from "../../assets/aspnet-light.svg";
 import aspnetIconDark from "../../assets/aspnet-dark.svg";
 import rIconLight from "../../assets/r-light.svg";
 import rIconDark from "../../assets/r-dark.svg";
+import npmIconLight from "../../assets/npm-light.svg";
+import npmIconDark from "../../assets/npm-dark.svg";
 import SkillList from "../../common/SkillList";
 import { useTheme } from "../../common/ThemeContext";
 
@@ -58,6 +60,7 @@ function Skills() {
     csharp: theme === "light" ? csharpIconLight : csharpIconDark,
     aspnet: theme === "light" ? aspnetIconLight : aspnetIconDark,
     r: theme === "light" ? rIconLight : rIconDark,
+    npm: theme === "light" ? npmIconLight : npmIconDark,
   };
 
   return (
@@ -83,9 +86,10 @@ function Skills() {
       <hr />
       <div className={styles.skillList}>
         <SkillList src={icons.pandas} skill="Pandas" />
+        <SkillList src={icons.tensorflow} skill="TensorFlow" />
         <SkillList src={icons.numpy} skill="NumPy" />
         <SkillList src={icons.git} skill="Git" />
-        <SkillList src={icons.tensorflow} skill="TensorFlow" />
+        <SkillList src={icons.npm} skill="npm" />
         <SkillList src={icons.scikitLearn} skill="Scikit-learn" />
       </div>
     </section>
