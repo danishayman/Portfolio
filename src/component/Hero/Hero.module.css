@@ -6,11 +6,15 @@
   text-align: center;
   height: 100dvh;
   min-height: 500px;
+  user-select: none;
+  
 
   .hero {
     max-width: 200px;
     text-align: center;
     margin: 0 auto;
+    pointer-events: none;
+    -webkit-user-drag: none; /* Safari */
   }
 
   span {
@@ -95,6 +99,8 @@
     .hero {
       max-width: 350px;
       width: 350px;
+      pointer-events: none;
+      -webkit-user-drag: none; /* Safari */
     }
   }
 }
@@ -104,6 +110,8 @@
     .hero {
       max-width: 400px;
       width: 400px;
+      pointer-events: none;
+      -webkit-user-drag: none; /* Safari */
     }
   }
 }
