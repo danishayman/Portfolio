@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import styles from './Work.module.css';
-import gsc1 from "../../assets/gsc1.jpg";
-import gsc2 from "../../assets/gsc2.jpg";
-import teenfix1 from "../../assets/teenfix1.jpg";
-import teenfix2 from "../../assets/teenfix2.jpg";
+import gsc1 from "../../assets/gsc1.webp";
+import gsc2 from "../../assets/gsc2.webp";
+import teenfix1 from "../../assets/teenfix1.webp";
+import teenfix2 from "../../assets/teenfix2.webp";
 import inari1 from "../../assets/inari1.webp";
 import inari2 from "../../assets/inari2.webp";
 
