@@ -1,14 +1,14 @@
 import styles from "./Projects.module.css";
 import gasket from "../../assets/gasket.png";
 import law from "../../assets/law.png";
-import drink from "../../assets/drink.png";
-import cervical from "../../assets/cervical.png";
+import drink from "../../assets/drink.webp";
+import cervical from "../../assets/cervical.webp";
 import tensorflow from "../../assets/tensorflow.png";
-import creditcard from "../../assets/creditcard.png";
+import creditcard from "../../assets/creditcard.webp";
 import teapot from "../../assets/teapot.png";
 import Speaker from "../../assets/speaker.png";
-import bird from "../../assets/bird.png";
-import extinguisher from "../../assets/extinguisher.png";
+import bird from "../../assets/bird.webp";
+import extinguisher from "../../assets/extinguisher.webp";
 import ProjectCard from "../../common/ProjectCard";
 
 function Projects() {
