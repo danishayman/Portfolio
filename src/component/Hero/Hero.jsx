@@ -1,6 +1,5 @@
 import styles from "./Hero.module.css";
 import heroImg from "../../assets/hero.webp";
-import lelouchImg from "../../assets/lelouch.webp";
 import sun from "../../assets/sun.svg";
 import moon from "../../assets/moon.svg";
 import twitterLight from "../../assets/twitter-light.svg";
@@ -14,7 +13,7 @@ import githubDark from "../../assets/github-dark.svg";
 import linkedinDark from "../../assets/linkedin-dark.svg";
 import instagramDark from "../../assets/instagram-dark.svg";
 import { useTheme } from "../../common/ThemeContext";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 function Hero() {
   const { theme, toggleTheme } = useTheme();
@@ -24,12 +23,6 @@ function Hero() {
   const linkedinIcon = theme === "light" ? linkedinLight : linkedinDark;
   const instagramIcon = theme === "light" ? instagramLight : instagramDark;
   const emailIcon = theme === "light" ? emailLight : emailDark;
-
-  
-  const [isFlipping, setIsFlipping] = useState(false);
-  const [currentImage, setCurrentImage] = useState(theme === "light" ? heroImg : lelouchImg);
-  const flipTimeoutRef = useRef(null);
-  const animationEndedRef = useRef(null);
 
   // Preload images
   const preloadImages = (images) => {
@@ -41,44 +34,18 @@ function Hero() {
 
   useEffect(() => {
     // Preload images when the component mounts
-    preloadImages([heroImg, lelouchImg, sun, moon, twitterLight, githubLight, linkedinLight, instagramLight, twitterDark, githubDark, linkedinDark, instagramDark]);
+    preloadImages([heroImg, sun, moon, twitterLight, githubLight, linkedinLight, instagramLight, twitterDark, githubDark, linkedinDark, instagramDark]);
   }, []);
 
-  // Handle image swap during flip animation
-  useEffect(() => {
-    if (isFlipping) {
-      // Clear any existing timeouts
-      if (flipTimeoutRef.current) clearTimeout(flipTimeoutRef.current);
-      
-      // Set the new image halfway through the animation
-      flipTimeoutRef.current = setTimeout(() => {
-        setCurrentImage(theme === "light" ? heroImg : lelouchImg);
-      }, 250); // Adjusted to match the animation midpoint
-      
-      // End animation after its complete duration
-      animationEndedRef.current = setTimeout(() => {
-        setIsFlipping(false);
-      }, 500); // Match the full animation duration
-      
-      return () => {
-        clearTimeout(flipTimeoutRef.current);
-        clearTimeout(animationEndedRef.current);
-      };
-    }
-  }, [isFlipping, theme]);
-
   const handleThemeToggle = () => {
-    if (!isFlipping) {
-      setIsFlipping(true);
-      toggleTheme();
-    }
+    toggleTheme();
   };
 
   return (
     <section id="hero" className={styles.container}>
       <div className={styles.colorModeContainer}>
-        <div className={`${styles.imageContainer} ${isFlipping ? styles.flipping : ""}`}>
-          <img className={styles.hero} src={currentImage} alt="Profile picture" />
+        <div className={styles.imageContainer}>
+          <img className={styles.hero} src={heroImg} alt="Profile picture" />
         </div>
 
         <img
