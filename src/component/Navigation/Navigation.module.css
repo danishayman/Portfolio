@@ -102,6 +102,7 @@
     padding: 10px;
     max-width: 500px;
     margin: 0 auto;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .mobileContainer {
