@@ -115,8 +115,8 @@
 
 .images {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr); /* Always show 2 images per row even on mobile */
+    gap: 0.5rem; /* Smaller gap for mobile */
 }
 
 .images img {
@@ -152,6 +152,11 @@
 
     .content {
         flex: 1;
+    }
+    
+    .images {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Return to original responsive behavior */
+        gap: 1rem; /* Return to original gap */
     }
 }
 
