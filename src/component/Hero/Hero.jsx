@@ -7,6 +7,8 @@ import twitterLight from "../../assets/twitter-light.svg";
 import githubLight from "../../assets/github-light.svg";
 import linkedinLight from "../../assets/linkedin-light.svg";
 import instagramLight from "../../assets/instagram-light.svg";
+import emailLight from "../../assets/email-light.svg";
+import emailDark from "../../assets/email-dark.svg";
 import twitterDark from "../../assets/twitter-dark.svg";
 import githubDark from "../../assets/github-dark.svg";
 import linkedinDark from "../../assets/linkedin-dark.svg";
@@ -21,6 +23,8 @@ function Hero() {
   const githubIcon = theme === "light" ? githubLight : githubDark;
   const linkedinIcon = theme === "light" ? linkedinLight : linkedinDark;
   const instagramIcon = theme === "light" ? instagramLight : instagramDark;
+  const emailIcon = theme === "light" ? emailLight : emailDark;
+
   
   const [isFlipping, setIsFlipping] = useState(false);
   const [currentImage, setCurrentImage] = useState(theme === "light" ? heroImg : lelouchImg);
@@ -94,8 +98,8 @@ function Hero() {
         <h2>Computer Science Student</h2>
 
         <span>
-          <a href="https://www.instagram.com/danishayman/" target="_blank">
-            <img src={instagramIcon} alt="Instagram icon" />
+          <a href="mailto:danishaiman3b@gmail.com">
+            <img src={emailIcon} alt="Instagram icon" />
           </a>
           <a href="https://github.com/danishayman/" target="_blank">
             <img src={githubIcon} alt="Github icon" />
