@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from './Navigation.module.css';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Home, Briefcase, Laptop, GraduationCap, Code, Mail } from 'lucide-react';
 import { useTheme } from '../../common/ThemeContext';
 
 function Navigation() {
@@ -9,12 +9,12 @@ function Navigation() {
   const { theme, toggleTheme } = useTheme();
 
   const navItems = [
-    { id: 'hero', label: 'HOME' },
-    { id: 'education', label: 'EDUCATION' },
-    { id: 'skills', label: 'SKILLS' },
-    { id: 'projects', label: 'PROJECTS' },
-    { id: 'work', label: 'EXPERIENCE' },
-    { id: 'contact', label: 'CONTACT' },
+    { id: 'hero', label: 'HOME', icon: <Home size={24} /> },
+    { id: 'education', label: 'EDUCATION', icon: <GraduationCap size={24} /> },
+    { id: 'skills', label: 'SKILLS', icon: <Code size={24} /> },
+    { id: 'projects', label: 'PROJECTS', icon: <Laptop size={24} /> },
+    { id: 'work', label: 'EXPERIENCE', icon: <Briefcase size={24} /> },
+    { id: 'contact', label: 'CONTACT', icon: <Mail size={24} /> },
   ];
 
   useEffect(() => {
@@ -68,29 +68,42 @@ function Navigation() {
   };
 
   return (
-    <nav className={styles.nav}>
-      <div className={styles.container}>
-        <button
-          className={styles.menuButton}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+    <>
+      {/* Desktop Navigation */}
+      <nav className={styles.desktopNav}>
+        <div className={styles.container}>
+          <div className={styles.menuItems}>
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                className={`${styles.navItem} ${activeSection === item.id ? styles.active : ''}`}
+                onClick={() => scrollToSection(item.id)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </nav>
 
-        <div className={`${styles.menuItems} ${isMenuOpen ? styles.open : ''}`}>
+      {/* Mobile Navigation */}
+      <nav className={styles.mobileNav}>
+        <div className={styles.mobileContainer}>
           {navItems.map((item) => (
             <button
               key={item.id}
-              className={`${styles.navItem} ${activeSection === item.id ? styles.active : ''}`}
+              className={`${styles.mobileNavItem} ${activeSection === item.id ? styles.active : ''}`}
               onClick={() => scrollToSection(item.id)}
+              aria-label={item.label}
             >
-              {item.label}
+              <div className={styles.iconWrapper}>
+                {item.icon}
+              </div>
             </button>
           ))}
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }
 

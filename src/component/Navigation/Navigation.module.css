@@ -1,14 +1,13 @@
-.nav {
+.nav, .desktopNav {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    background-color: var(--bg-color);
+    background-color: var(--backgound-color);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     user-select: none;
-
 }
 
 .container {
@@ -88,60 +87,83 @@
     width: 100%;
 }
 
+/* Mobile Navigation Bar */
+.mobileNav {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: var(--backgound-color);
+    border: 2px solid var(--border-color);
+    box-shadow: 5px 5px var(--box-shadow-color);
+    border-radius: 16px;
+    padding: 10px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.mobileContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.mobileNavItem {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    opacity: 0.7;
+    cursor: pointer;
+    padding: 8px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    transition: all 0.3s ease;
+}
+
+.iconWrapper {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.mobileNavItem.active {
+    opacity: 1;
+}
+
+.mobileNavItem.active .iconWrapper {
+    background-color: var(--backgound-color);
+    border: 1px solid var(--text-color);
+    box-shadow: 3px 3px var(--box-shadow-color);
+    transform: translateY(-5px);
+}
+
 @media (max-width: 768px) {
-    .nav {
-        visibility: hidden;
-        background: none;
-        border: none;
-        backdrop-filter: none;
+    .desktopNav {
+        display: none;
     }
 
-    .menuButton {
+    .mobileNav {
         display: block;
-        background-color: var(--bg-color);
-        backdrop-filter: blur(10px);
-        border-radius: 8px;
-        padding: 0.75rem;
-
     }
+    
+    /* Add padding at the bottom to prevent content from being covered by floating nav */
+    body {
+        padding-bottom: 80px;
+    }
+}
 
-    .menuItems {
+@media (min-width: 769px) {
+    .mobileNav {
         display: none;
-    }
-
-    .menuItems.open {
-        display: flex;
-        position: fixed;
-        top: 4rem;
-        right: 1rem;
-        flex-direction: column;
-        background-color: var(--backgound-color);
-        padding: 1rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        width: auto;
-        min-width: 200px;
-    }
-
-    .navItem {
-        width: 100%;
-        text-align: center;
-        padding: 0.75rem 2rem;
-    }
-
-    .navItem::after {
-        display: none;
-    }
-
-    .navItem:hover {
-        background-color: var(--card-bg);
-    }
-
-    .navItem.active {
-        background-color: var(--card-bg);
     }
 }
