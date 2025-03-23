@@ -9,12 +9,12 @@ function Navigation() {
   const { theme, toggleTheme } = useTheme();
 
   const navItems = [
-    { id: 'hero', label: 'HOME', icon: <Home size={24} /> },
-    { id: 'education', label: 'EDUCATION', icon: <GraduationCap size={24} /> },
-    { id: 'skills', label: 'SKILLS', icon: <Code size={24} /> },
-    { id: 'projects', label: 'PROJECTS', icon: <Laptop size={24} /> },
-    { id: 'work', label: 'EXPERIENCE', icon: <Briefcase size={24} /> },
-    { id: 'contact', label: 'CONTACT', icon: <Mail size={24} /> },
+    { id: 'hero', label: 'HOME', icon: <Home size={18} /> },
+    { id: 'education', label: 'EDUCATION', icon: <GraduationCap size={18} /> },
+    { id: 'skills', label: 'SKILLS', icon: <Code size={18} /> },
+    { id: 'projects', label: 'PROJECTS', icon: <Laptop size={18} /> },
+    { id: 'work', label: 'EXPERIENCE', icon: <Briefcase size={18} /> },
+    { id: 'contact', label: 'CONTACT', icon: <Mail size={18} /> },
   ];
 
   useEffect(() => {
