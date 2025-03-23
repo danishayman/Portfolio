@@ -1,5 +1,6 @@
 import styles from "./Hero.module.css";
 import heroImg from "../../assets/hero.webp";
+import lelouchImg from "../../assets/lelouch.webp";
 import sun from "../../assets/sun.svg";
 import moon from "../../assets/moon.svg";
 import twitterLight from "../../assets/twitter-light.svg";
@@ -34,7 +35,7 @@ function Hero() {
 
   useEffect(() => {
     // Preload images when the component mounts
-    preloadImages([heroImg, sun, moon, twitterLight, githubLight, linkedinLight, instagramLight, twitterDark, githubDark, linkedinDark, instagramDark]);
+    preloadImages([heroImg, lelouchImg, sun, moon, twitterLight, githubLight, linkedinLight, instagramLight, twitterDark, githubDark, linkedinDark, instagramDark]);
   }, []);
 
   const handleThemeToggle = () => {
@@ -45,7 +46,14 @@ function Hero() {
     <section id="hero" className={styles.container}>
       <div className={styles.colorModeContainer}>
         <div className={styles.imageContainer}>
-          <img className={styles.hero} src={heroImg} alt="Profile picture" />
+          <div className={styles.flipImg}>
+            <div className={styles.front}>
+              <img src={heroImg} alt="Profile picture" />
+            </div>
+            <div className={styles.back}>
+              <img src={lelouchImg} alt="Alternative profile picture" />
+            </div>
+          </div>
         </div>
 
         <img

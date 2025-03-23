@@ -7,70 +7,54 @@
   height: 100dvh;
   min-height: 500px;
   user-select: none;
-  
-
-  .hero {
-    max-width: 200px;
-    text-align: center;
-    margin: 0 auto;
-    pointer-events: none;
-    -webkit-user-drag: none; /* Safari */
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    backface-visibility: hidden; /* Prevent flickering during animation */
-  }
-
-  span {
-    display: flex;
-    gap: 25px;
-    justify-content: center;
-    -webkit-tap-highlight-color: transparent;
-
-    a {
-      margin: 0;
-
-      img {
-        width: 30px;
-      }
-    }
-  }
-
-  a {
-    width: fit-content;
-    align-self: center;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  button {
-    background-color: var(--bt-color);
-    color: var(--btn-text-color);
-    border: none;
-    border-radius: 20px;
-    width: 126px;
-    height: 50px;
-    font-size: 20px;
-    font-weight: bold;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-    transition: box-shadow 200ms ease-in-out, transform 200ms ease-in-out;
-  }
-
-  button:hover {
-    transform: scale(1.05);
-  }
-
-  button:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-  }
-}
-
-.colorModeContainer {
-  position: relative;
 }
 
 .imageContainer {
   display: inline-block;
+  perspective: 1000px;
+  width: 200px;
+  height: 200px;
+  margin: auto;
+}
+
+.flipImg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s ease-in-out, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  border-radius: 50%;
+}
+
+.front, .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.front img, .back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+.imageContainer:hover .flipImg {
+  transform: rotateY(180deg);
+  box-shadow: 0 0 15px 5px var(--bt-color);
+}
+
+.colorModeContainer {
+  position: relative;
 }
 
 .colorMode {
@@ -98,28 +82,65 @@
   align-items: center;
 }
 
+.container span {
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.container span a {
+  margin: 0;
+}
+
+.container span a img {
+  width: 30px;
+}
+
+.container a {
+  width: fit-content;
+  align-self: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.container button {
+  background-color: var(--bt-color);
+  color: var(--btn-text-color);
+  border: none;
+  border-radius: 20px;
+  width: 126px;
+  height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  transition: box-shadow 200ms ease-in-out, transform 200ms ease-in-out;
+}
+
+.container button:hover {
+  transform: scale(1.05);
+}
+
+.container button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+}
+
 @media (width >=800px) {
   .container {
     flex-direction: row-reverse;
     align-items: center;
     justify-content: space-evenly;
-
-    .hero {
-      max-width: 350px;
-      width: 350px;
-      pointer-events: none;
-      -webkit-user-drag: none; /* Safari */
-    }
+  }
+  
+  .imageContainer {
+    width: 350px;
+    height: 350px;
   }
 }
 
 @media (width >=1400px) {
-  .container {
-    .hero {
-      max-width: 400px;
-      width: 400px;
-      pointer-events: none;
-      -webkit-user-drag: none; /* Safari */
-    }
+  .imageContainer {
+    width: 400px;
+    height: 400px;
   }
 }
