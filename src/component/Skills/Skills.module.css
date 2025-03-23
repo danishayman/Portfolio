@@ -2,18 +2,19 @@
   display: flex;
   flex-direction: column;
   text-align: center;
-  padding: 2rem;
+  padding: 1.5rem;
   min-height: 100dvh;
   justify-content: center;
-  gap: 2rem;
+  gap: 1.5rem;
 
   span {
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem;
     border-radius: 8px;
     transition: all 0.3s ease;
+    margin: 0 4px;
   }
 
   span:hover {
@@ -27,18 +28,20 @@
   }
 
   img {
-    width: 20px;
+    width: 16px;
     transition: transform 0.3s ease;
   }
 }
 
 .skillList {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-self: center;
   flex-wrap: wrap;
-  row-gap: 20px;
-  max-width: 26ch;
+  gap: 5px;
+  row-gap: 12px;
+  width: 100%;
+  max-width: 100%;
   position: relative;
   padding: 0.5rem;
 }
@@ -52,18 +55,39 @@
 }
 
 hr {
-  width: 100px;
+  width: 60px;
   height: 1px;
   border: none;
   background-color: var(--text-color);
-  margin: 30px auto;
+  margin: 15px auto;
   transition: all 0.3s ease;
   opacity: 0.5;
 }
 
 hr:hover {
-  width: 150px;
+  width: 100px;
   opacity: 1;
+}
+
+@media (width >=500px) {
+  .container {
+    padding: 2rem;
+    gap: 2rem;
+  }
+
+  .skillList {
+    gap: 10px;
+    row-gap: 15px;
+    max-width: 450px;
+  }
+
+  .container span {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .container img {
+    width: 18px;
+  }
 }
 
 @media (width >=800px) {
@@ -73,15 +97,25 @@ hr:hover {
 
   .skillList {
     max-width: fit-content;
-    gap: 30px;
+    gap: 20px;
+    row-gap: 20px;
 
     p {
-      font-size: 20px;
+      font-size: 18px;
     }
+  }
+
+  .container span {
+    padding: 0.5rem 1rem;
+  }
+
+  .container img {
+    width: 20px;
   }
 
   hr {
     width: 300px;
+    margin: 30px auto;
   }
 
   hr:hover {
@@ -128,4 +162,12 @@ hr:hover {
 
 .skillList span:nth-child(5) {
   animation-delay: 0.5s;
+}
+
+.skillList span:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+.skillList span:nth-child(7) {
+  animation-delay: 0.7s;
 }
