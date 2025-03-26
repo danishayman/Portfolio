@@ -21,7 +21,7 @@ function Projects() {
           src={extinguisher}
           link="https://github.com/danishayman/FireExtinguisherTrackingSystem"
           h3="Fire Extinguisher Tracking System"
-          p={<>.NET Application<br />(In Progress)</>}
+          p="ASP.NET Application"
         />
 
         <ProjectCard
