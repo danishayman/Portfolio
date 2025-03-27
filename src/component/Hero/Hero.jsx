@@ -48,7 +48,7 @@ function Hero() {
 
 
       <Helmet>
-        <title>Danish Aiman | AI & ML Developer</title>
+        <title>danishayman</title>
         <meta name="description" content="Danish Aiman - Computer Science Student" />
         <meta name="keywords" content="AI, Machine Learning, Web Development, Portfolio, Danish Aiman" />
         <meta property="og:title" content="Danish Aiman | AI & ML Developer" />
