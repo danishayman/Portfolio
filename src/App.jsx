@@ -1,4 +1,5 @@
 import "./App.css";
+import { HelmetProvider } from "react-helmet-async";
 import Navigation from "./component/Navigation/Navigation";
 import Hero from "./component/Hero/Hero";
 import Education from "./component/Education/Education";
@@ -10,16 +11,18 @@ import Footer from "./component/Footer/Footer";
 
 function App() {
   return (
-    <>
-      <Navigation />
-      <Hero />
-      <Education />
-      <Skills />
-      <Projects />
-      <Work />
-      <Contact />
-      <Footer />
-    </>
+    <HelmetProvider>
+      <>
+        <Navigation />
+        <Hero />
+        <Education />
+        <Skills />
+        <Projects />
+        <Work />
+        <Contact />
+        <Footer />
+      </>
+    </HelmetProvider>
   );
 }
 
