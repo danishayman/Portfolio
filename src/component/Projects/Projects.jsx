@@ -8,6 +8,7 @@ import creditcard from "../../assets/creditcard.webp";
 import teapot from "../../assets/teapot.webp";
 import Speaker from "../../assets/speaker.webp";
 import bird from "../../assets/bird.webp";
+import homestay from "../../assets/homestay.webp";
 import extinguisher from "../../assets/extinguisher.webp";
 import ProjectCard from "../../common/ProjectCard";
 
@@ -16,6 +17,25 @@ function Projects() {
     <section id="projects" className={styles.container}>
       <h1 className="sectionTitle">Projects</h1>
       <div className={styles.projectContainer}>
+
+        <ProjectCard
+          src={homestay}
+          link="https://melah-inn.vercel.app/"
+          h3= {
+            <>
+              Melah Inn
+              <br />
+              Homestay
+            </>
+          }
+          p={
+            <>
+              Next.js Application
+              <br />
+              (In Progress)
+            </>
+          }
+        />
 
         <ProjectCard
           src={extinguisher}
