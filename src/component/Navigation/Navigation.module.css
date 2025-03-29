@@ -103,8 +103,6 @@
     max-width: 380px;
     margin: 0 auto;
     -webkit-tap-highlight-color: transparent;
-    touch-action: auto;
-    will-change: transform;
 }
 
 .mobileContainer {
@@ -128,7 +126,6 @@
     justify-content: center;
     flex: 1;
     transition: all 0.3s ease;
-    touch-action: manipulation;
     user-select: none;
     position: relative;
 }
