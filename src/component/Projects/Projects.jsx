@@ -28,13 +28,7 @@ function Projects() {
               Homestay
             </>
           }
-          p={
-            <>
-              Next.js Application
-              <br />
-              (In Progress)
-            </>
-          }
+          p="Next.js Application"
         />
 
         <ProjectCard
