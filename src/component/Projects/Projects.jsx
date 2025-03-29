@@ -20,10 +20,10 @@ function Projects() {
 
         <ProjectCard
           src={homestay}
-          link="https://melah-inn.vercel.app/"
+          link="https://tuahcemerlang.vercel.app/"
           h3= {
             <>
-              Melah Inn
+              Tuah Cemerlang
               <br />
               Homestay
             </>
