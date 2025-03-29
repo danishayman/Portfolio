@@ -35,6 +35,8 @@ import rIconLight from "../../assets/r-light.svg";
 import rIconDark from "../../assets/r-dark.svg";
 import npmIconLight from "../../assets/npm-light.svg";
 import npmIconDark from "../../assets/npm-dark.svg";
+import nextjsIconLight from "../../assets/next-light.svg";
+import nextjsIconDark from "../../assets/next-dark.svg";
 import SkillList from "../../common/SkillList";
 import { useTheme } from "../../common/ThemeContext";
 
@@ -61,6 +63,7 @@ function Skills() {
     aspnet: theme === "light" ? aspnetIconLight : aspnetIconDark,
     r: theme === "light" ? rIconLight : rIconDark,
     npm: theme === "light" ? npmIconLight : npmIconDark,
+    next: theme === "light" ? nextjsIconLight : nextjsIconDark,
   };
 
   return (
@@ -72,6 +75,7 @@ function Skills() {
         <SkillList src={icons.react} skill="React.js" />
         <SkillList src={icons.node} skill="Node.js" />
         <SkillList src={icons.aspnet} skill="ASP.NET" />
+        <SkillList src={icons.next} skill="Next.js" />
       </div>
       <hr />
       <div className={styles.skillList}>
