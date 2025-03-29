@@ -6,7 +6,6 @@ import { useTheme } from '../../common/ThemeContext';
 // Modify the passive touch listeners setup
 if (typeof window !== 'undefined') {
   try {
-    // Test via a getter in the options object to see if passive is supported
     let supportsPassive = false;
     const opts = Object.defineProperty({}, 'passive', {
       get: function() { supportsPassive = true; return true; }
@@ -14,20 +13,10 @@ if (typeof window !== 'undefined') {
     window.addEventListener('testPassive', null, opts);
     window.removeEventListener('testPassive', null, opts);
     
-    // Use passive: false for touchmove to allow preventDefault when needed
     if (supportsPassive) {
+      // Only add passive listeners - don't try to prevent default behavior globally
       window.addEventListener('touchstart', function(){}, { passive: true });
-      // Use passive: false for touchmove to be able to prevent default behavior if needed
-      window.addEventListener('touchmove', function(e){
-        // Prevent touchmove events from causing unwanted scrolling only on specific elements
-        if (e.target.closest('.mobileNav')) {
-          // Only prevent default if it's a short touch move (likely accidental)
-          const touchThreshold = 5; // pixels
-          if (Math.abs(e.touches[0].clientY - e.touches[0].initialClientY) < touchThreshold) {
-            e.preventDefault();
-          }
-        }
-      }, { passive: false });
+      window.addEventListener('touchmove', function(){}, { passive: true });
       
       const wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
       window.addEventListener(wheelEvent, function(){}, { passive: true });
@@ -63,14 +52,17 @@ function Navigation() {
   ];
 
   useEffect(() => {
-    // Add a more reliable intersection observer with higher threshold and better tolerance
+    // Modify the intersection observer configuration for better accuracy
     const observerOptions = {
       root: null,
-      rootMargin: '-15% 0px -15% 0px', // Increased margins
-      threshold: [0.2, 0.5, 0.8] // More threshold points for better accuracy
+      // Use a smaller rootMargin to make it less aggressive
+      rootMargin: '-5% 0px -5% 0px', 
+      // Use lower thresholds for smoother transitions
+      threshold: [0.1, 0.3] 
     };
 
     const observerCallback = (entries) => {
+      // Only process intersection events if not in programmatic scrolling
       if (isProgrammaticScrolling) return;
       
       // Find the most visible section
@@ -80,7 +72,11 @@ function Navigation() {
         const mostVisible = visibleEntries.reduce((prev, current) => 
           (prev.intersectionRatio > current.intersectionRatio) ? prev : current
         );
-        setActiveSection(mostVisible.target.id);
+        
+        // Only update if it's substantially different to avoid flicker
+        if (mostVisible.intersectionRatio > 0.2) {
+          setActiveSection(mostVisible.target.id);
+        }
       }
     };
 
@@ -116,41 +112,82 @@ function Navigation() {
     };
   }, [isProgrammaticScrolling]);
 
-  // Enhance scrollToSection with better timing 
+  // Completely revise the scrollToSection implementation
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
-    if (element) {
-      setIsProgrammaticScrolling(true);
-      
-      const offset = 80; // This should match your navbar height
-      const elementPosition = element.offsetTop - offset;
-
+    if (!element) return;
+    
+    // Set programmatic scrolling state
+    setIsProgrammaticScrolling(true);
+    
+    // Calculate position
+    const offset = 80; // Navbar height
+    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset - offset;
+    
+    // Set active section immediately to avoid visual lag
+    setActiveSection(id);
+    setIsMenuOpen(false);
+    
+    // Scroll to the section
+    try {
       window.scrollTo({
         top: elementPosition,
         behavior: 'smooth'
       });
-
-      setActiveSection(id);
-      setIsMenuOpen(false);
-      
-      // Use a longer timeout and add a cleanup in case user interacts during scroll
-      const timer = setTimeout(() => {
-        setIsProgrammaticScrolling(false);
-      }, 1500); // 1.5 seconds for slower devices
-      
-      // Add a scroll event listener to detect when scrolling stops
-      const handleScrollEnd = debounce(() => {
-        setIsProgrammaticScrolling(false);
-        window.removeEventListener('scroll', handleScrollEnd);
-      }, 100);
-      
-      window.addEventListener('scroll', handleScrollEnd);
-      
-      return () => {
-        clearTimeout(timer);
-        window.removeEventListener('scroll', handleScrollEnd);
-      };
+    } catch (error) {
+      // Fallback for browsers that don't support smooth scrolling
+      window.scrollTo(0, elementPosition);
     }
+    
+    // Use a combination of techniques to detect when scrolling has stopped
+    
+    // 1. Set a maximum duration for programmatic scrolling
+    const maxScrollDuration = 2000; // 2 seconds max
+    const scrollTimeout = setTimeout(() => {
+      setIsProgrammaticScrolling(false);
+    }, maxScrollDuration);
+    
+    // 2. Use scroll events to detect natural stop
+    let previousScrollPosition = window.pageYOffset;
+    let scrollStoppedTimer = null;
+    let scrollingHasStopped = false;
+    
+    const checkIfScrollHasStopped = () => {
+      const currentScrollPosition = window.pageYOffset;
+      
+      // If position hasn't changed, scrolling has likely stopped
+      if (currentScrollPosition === previousScrollPosition && !scrollingHasStopped) {
+        scrollingHasStopped = true;
+        setIsProgrammaticScrolling(false);
+        window.removeEventListener('scroll', scrollListener);
+        clearTimeout(scrollTimeout);
+      } else {
+        previousScrollPosition = currentScrollPosition;
+        // Continue checking until max duration
+        scrollStoppedTimer = setTimeout(checkIfScrollHasStopped, 100);
+      }
+    };
+    
+    const scrollListener = () => {
+      // Clear previous timer
+      if (scrollStoppedTimer) {
+        clearTimeout(scrollStoppedTimer);
+      }
+      // Set new timer
+      scrollStoppedTimer = setTimeout(checkIfScrollHasStopped, 100);
+    };
+    
+    window.addEventListener('scroll', scrollListener);
+    
+    // Initial timer to start checking if scrolling has stopped
+    scrollStoppedTimer = setTimeout(checkIfScrollHasStopped, 100);
+    
+    // Cleanup function
+    return () => {
+      clearTimeout(scrollTimeout);
+      clearTimeout(scrollStoppedTimer);
+      window.removeEventListener('scroll', scrollListener);
+    };
   };
 
   // Enhanced click handler with touch detection
@@ -163,16 +200,19 @@ function Navigation() {
     scrollToSection(id);
   };
   
-  // Add touch handlers to prevent accidental scrolling from the navigation bar
+  // Improved touch handlers in the Navigation component
   const handleTouchStart = (e) => {
     setTouchStartY(e.touches[0].clientY);
   };
   
   const handleTouchMove = (e) => {
-    // If touch movement is very small, prevent default to avoid accidental scrolling
+    // Don't prevent default scrolling - this may be causing the lock effect
+    // We'll only track the movement but not interfere with the browser's handling
     const touchDiff = Math.abs(e.touches[0].clientY - touchStartY);
-    if (touchDiff < 10) {
-      e.preventDefault();
+    
+    // If there's significant movement, update the touch position
+    if (touchDiff > 5) {
+      setTouchStartY(e.touches[0].clientY);
     }
   };
 

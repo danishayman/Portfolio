@@ -116,8 +116,11 @@ p {
 }
 
 .is-programmatic-scrolling {
-  /* This adds a subtle "lock" feeling while the programmatic scroll is happening */
-  /* But still allows the scrolling to complete */
-  scroll-behavior: smooth;
-  overflow-anchor: none;
+  /* Remove these properties as they might be causing the issue */
+  /* scroll-behavior: smooth; */
+  /* overflow-anchor: none; */
+  
+  /* Instead, use a more subtle approach */
+  scroll-snap-type: none;
+  overscroll-behavior: none;
 }
