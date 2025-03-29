@@ -18,33 +18,46 @@ function Navigation() {
   ];
 
   useEffect(() => {
+    // Throttle/debounce the scroll handler to improve performance
+    let ticking = false;
+    
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const offset = 100; // Adjust this value based on your navbar height
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollPosition = window.scrollY;
+          const offset = 100; // Adjust this value based on your navbar height
 
-      // Get all sections and filter out any null elements
-      const sections = navItems
-        .map(item => document.getElementById(item.id))
-        .filter(Boolean);
+          // Get all sections and filter out any null elements
+          const sections = navItems
+            .map(item => document.getElementById(item.id))
+            .filter(Boolean);
 
-      // Find the current section by iterating from bottom to top
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
-        const sectionTop = section.offsetTop - offset;
+          // Find the current section by iterating from bottom to top
+          for (let i = sections.length - 1; i >= 0; i--) {
+            const section = sections[i];
+            const sectionTop = section.offsetTop - offset;
 
-        if (scrollPosition >= sectionTop) {
-          setActiveSection(section.id);
-          break;
-        }
-      }
+            if (scrollPosition >= sectionTop) {
+              setActiveSection(section.id);
+              break;
+            }
+          }
 
-      // Special case for the top of the page
-      if (scrollPosition < sections[0].offsetTop - offset) {
-        setActiveSection('hero');
+          // Special case for the top of the page
+          if (scrollPosition < sections[0].offsetTop - offset) {
+            setActiveSection('hero');
+          }
+          
+          ticking = false;
+        });
+        
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    // Add passive flag to tell browser it won't prevent scrolling
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
     // Initial check for active section
     handleScroll();
 
