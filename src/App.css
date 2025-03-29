@@ -1,5 +1,5 @@
 :root {
-  --backgound-color: #fff;
+  --background-color: #fff;
   --bt-color: #0987f2;
   --btn-text-color: #fff;
   --project-card-bg: #ffffff00;
@@ -11,7 +11,7 @@
 }
 
 [data-theme="dark"] {
-  --backgound-color: #222;
+  --background-color: #222;
   --bt-color: #fff;
   --btn-text-color: #222;
   --project-card-bg: #fff;
@@ -23,7 +23,7 @@
 }
 
 body {
-  background-color: var(--backgound-color);
+  background-color: var(--background-color);
   display: flex;
   justify-content: center;
   margin: 0 auto 60px;

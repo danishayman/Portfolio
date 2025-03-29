@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background-color: var(--backgound-color);
+    background-color: var(--background-color);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     user-select: none;
@@ -95,7 +95,7 @@
     left: 12px;
     right: 12px;
     z-index: 1000;
-    background-color: var(--backgound-color);
+    background-color: var(--background-color);
     border: 1.5px solid var(--border-color);
     box-shadow: 4px 4px var(--box-shadow-color);
     border-radius: 12px;
@@ -142,7 +142,7 @@
 }
 
 .mobileNavItem.active .iconWrapper {
-    background-color: var(--backgound-color);
+    background-color: var(--background-color);
     border: 1px solid var(--text-color);
     box-shadow: 2px 2px var(--box-shadow-color);
     transform: translateY(-3px);
