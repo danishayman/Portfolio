@@ -39,6 +39,8 @@ import nextjsIconLight from "../../assets/next-light.svg";
 import nextjsIconDark from "../../assets/next-dark.svg";
 import tailwindIconLight from "../../assets/tailwind-light.svg";
 import tailwindIconDark from "../../assets/tailwind-dark.svg";
+import typescriptIconLight from "../../assets/typescript-light.svg";
+import typescriptIconDark from "../../assets/typescript-dark.svg";
 import SkillList from "../../common/SkillList";
 import { useTheme } from "../../common/ThemeContext";
 
@@ -67,6 +69,7 @@ function Skills() {
     npm: theme === "light" ? npmIconLight : npmIconDark,
     next: theme === "light" ? nextjsIconLight : nextjsIconDark,
     tailwind: theme === "light" ? tailwindIconLight : tailwindIconDark,
+    typescript: theme === "light" ? typescriptIconLight : typescriptIconDark,
   };
 
   return (
@@ -90,6 +93,7 @@ function Skills() {
         <SkillList src={icons.javascript} skill="JavaScript" />
         <SkillList src={icons.sql} skill="SQL" />
         <SkillList src={icons.csharp} skill="C#" />
+        <SkillList src={icons.typescript} skill="TypeScript" />
       </div>
       <hr />
       <div className={styles.skillList}>
