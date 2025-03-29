@@ -4,6 +4,8 @@ import gsc1 from "../../assets/gsc1.webp";
 import gsc2 from "../../assets/gsc2.webp";
 import teenfix1 from "../../assets/teenfix1.webp";
 import teenfix2 from "../../assets/teenfix2.webp";
+import daboss1 from "../../assets/daboss1.webp";
+import daboss2 from "../../assets/daboss2.webp";
 import inari1 from "../../assets/inari1.webp";
 import inari2 from "../../assets/inari2.webp";
 
@@ -16,13 +18,24 @@ function Work() {
         {
             role: "Software Engineer Intern",
             company: "Inari Technology",
-            duration: "February 2025 - Present",
+            duration: "March 2025 - Present",
             description: [
                 "Developed and maintained internal software for efficiency and accuracy.",
                 "Fixed bugs and optimized performance with cross-functional teams.",
                 "Conducted code reviews and testing for quality assurance.",
             ],
             images: [inari1, inari2]
+        },
+        {
+            role: "Computer Technician",
+            company: "PC DaBoss Technology",
+            duration: "January 2025 - March 2025",
+            description: [
+                "Assisted in diagnosing and repairing computer hardware and software issues.",
+                "Provided technical support to customers and staff.",
+                "Maintained inventory of computer parts and accessories.",
+            ],
+            images: [daboss1, daboss2]
         },
         {
             role: "Part-Time Crew: Steward",
