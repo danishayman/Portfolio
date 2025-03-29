@@ -107,7 +107,7 @@ function Navigation() {
       
       setTimeout(() => {
         setIsProgrammaticScrolling(false);
-      }, 1000); // Adjust based on your scroll animation duration
+      }, 1000); // 1 second should be enough for most smooth scrolls to complete
     }
   };
 

@@ -103,7 +103,7 @@
     max-width: 380px;
     margin: 0 auto;
     -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
+    touch-action: none;
     will-change: transform;
 }
 
