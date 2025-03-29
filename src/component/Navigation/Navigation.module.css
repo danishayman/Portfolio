@@ -103,6 +103,9 @@
     max-width: 380px;
     margin: 0 auto;
     -webkit-tap-highlight-color: transparent;
+    transform: translateZ(0);
+    will-change: transform;
+    transition: transform 0.3s ease;
 }
 
 .mobileContainer {
@@ -157,9 +160,8 @@
         display: block;
     }
     
-    /* Add padding at the bottom to prevent content from being covered by floating nav */
     body {
-        padding-bottom: 60px;
+        padding-bottom: 70px;
     }
 }
 

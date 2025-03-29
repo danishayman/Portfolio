@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styles from './Navigation.module.css';
 import { Menu, X, Home, Briefcase, Laptop, GraduationCap, Code, Mail } from 'lucide-react';
 import { useTheme } from '../../common/ThemeContext';
@@ -17,47 +17,47 @@ function Navigation() {
     { id: 'contact', label: 'CONTACT', icon: <Mail size={18} /> },
   ];
 
-  useEffect(() => {
-    // Throttle/debounce the scroll handler to improve performance
-    let ticking = false;
-    
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const scrollPosition = window.scrollY;
-          const offset = 100; // Adjust this value based on your navbar height
-
-          // Get all sections and filter out any null elements
-          const sections = navItems
-            .map(item => document.getElementById(item.id))
-            .filter(Boolean);
-
-          // Find the current section by iterating from bottom to top
-          for (let i = sections.length - 1; i >= 0; i--) {
-            const section = sections[i];
-            const sectionTop = section.offsetTop - offset;
-
-            if (scrollPosition >= sectionTop) {
-              setActiveSection(section.id);
-              break;
-            }
-          }
-
-          // Special case for the top of the page
-          if (scrollPosition < sections[0].offsetTop - offset) {
-            setActiveSection('hero');
-          }
-          
-          ticking = false;
-        });
-        
-        ticking = true;
+  // Add throttle function
+  const throttle = (func, delay) => {
+    let lastCall = 0;
+    return function(...args) {
+      const now = new Date().getTime();
+      if (now - lastCall < delay) {
+        return;
       }
+      lastCall = now;
+      return func(...args);
     };
+  };
 
-    // Add passive flag to tell browser it won't prevent scrolling
-    window.addEventListener('scroll', handleScroll, { passive: true });
+  useEffect(() => {
+    // Cache section elements to avoid repeated DOM queries
+    const sectionElements = navItems
+      .map(item => document.getElementById(item.id))
+      .filter(Boolean);
     
+    const handleScroll = throttle(() => {
+      const scrollPosition = window.scrollY;
+      const offset = 100; // Adjust this value based on your navbar height
+
+      // Find the current section by iterating from bottom to top
+      for (let i = sectionElements.length - 1; i >= 0; i--) {
+        const section = sectionElements[i];
+        const sectionTop = section.offsetTop - offset;
+
+        if (scrollPosition >= sectionTop) {
+          setActiveSection(section.id);
+          break;
+        }
+      }
+
+      // Special case for the top of the page
+      if (scrollPosition < sectionElements[0].offsetTop - offset) {
+        setActiveSection('hero');
+      }
+    }, 100); // Throttle to run at most once every 100ms
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     // Initial check for active section
     handleScroll();
 
