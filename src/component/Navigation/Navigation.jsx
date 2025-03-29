@@ -3,7 +3,7 @@ import styles from './Navigation.module.css';
 import { Menu, X, Home, Briefcase, Laptop, GraduationCap, Code, Mail } from 'lucide-react';
 import { useTheme } from '../../common/ThemeContext';
 
-// Add passive touch listeners for better performance
+// Modify the passive touch listeners setup
 if (typeof window !== 'undefined') {
   try {
     // Test via a getter in the options object to see if passive is supported
@@ -14,14 +14,23 @@ if (typeof window !== 'undefined') {
     window.addEventListener('testPassive', null, opts);
     window.removeEventListener('testPassive', null, opts);
     
-    // If passive is supported, add passive: true to all touch listeners
+    // Use passive: false for touchmove to allow preventDefault when needed
     if (supportsPassive) {
-      const wheelOpt = { passive: true };
-      const wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+      window.addEventListener('touchstart', function(){}, { passive: true });
+      // Use passive: false for touchmove to be able to prevent default behavior if needed
+      window.addEventListener('touchmove', function(e){
+        // Prevent touchmove events from causing unwanted scrolling only on specific elements
+        if (e.target.closest('.mobileNav')) {
+          // Only prevent default if it's a short touch move (likely accidental)
+          const touchThreshold = 5; // pixels
+          if (Math.abs(e.touches[0].clientY - e.touches[0].initialClientY) < touchThreshold) {
+            e.preventDefault();
+          }
+        }
+      }, { passive: false });
       
-      window.addEventListener('touchstart', function(){}, wheelOpt);
-      window.addEventListener('touchmove', function(){}, wheelOpt);
-      window.addEventListener(wheelEvent, function(){}, wheelOpt);
+      const wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+      window.addEventListener(wheelEvent, function(){}, { passive: true });
     }
   } catch (e) {
     // Do nothing if it fails
@@ -42,6 +51,7 @@ function Navigation() {
   const [isProgrammaticScrolling, setIsProgrammaticScrolling] = useState(false);
   const [lastClickTime, setLastClickTime] = useState(0);
   const { theme, toggleTheme } = useTheme();
+  const [touchStartY, setTouchStartY] = useState(0);
 
   const navItems = [
     { id: 'hero', label: 'HOME', icon: <Home size={18} /> },
@@ -53,10 +63,11 @@ function Navigation() {
   ];
 
   useEffect(() => {
+    // Add a more reliable intersection observer with higher threshold and better tolerance
     const observerOptions = {
       root: null,
-      rootMargin: '-10% 0px -10% 0px', // Use percentage instead of fixed pixels
-      threshold: [0.1, 0.5] // Multiple thresholds for better accuracy
+      rootMargin: '-15% 0px -15% 0px', // Increased margins
+      threshold: [0.2, 0.5, 0.8] // More threshold points for better accuracy
     };
 
     const observerCallback = (entries) => {
@@ -89,6 +100,23 @@ function Navigation() {
     };
   }, [navItems, isProgrammaticScrolling]);
 
+  // Add to the useEffect that depends on isProgrammaticScrolling
+  useEffect(() => {
+    // Lock/unlock body scroll based on programmatic scrolling state
+    if (isProgrammaticScrolling) {
+      // Only add the class - don't prevent scrolling entirely
+      document.body.classList.add('is-programmatic-scrolling');
+    } else {
+      document.body.classList.remove('is-programmatic-scrolling');
+    }
+    
+    return () => {
+      // Clean up
+      document.body.classList.remove('is-programmatic-scrolling');
+    };
+  }, [isProgrammaticScrolling]);
+
+  // Enhance scrollToSection with better timing 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
@@ -105,19 +133,47 @@ function Navigation() {
       setActiveSection(id);
       setIsMenuOpen(false);
       
-      setTimeout(() => {
+      // Use a longer timeout and add a cleanup in case user interacts during scroll
+      const timer = setTimeout(() => {
         setIsProgrammaticScrolling(false);
-      }, 1000); // 1 second should be enough for most smooth scrolls to complete
+      }, 1500); // 1.5 seconds for slower devices
+      
+      // Add a scroll event listener to detect when scrolling stops
+      const handleScrollEnd = debounce(() => {
+        setIsProgrammaticScrolling(false);
+        window.removeEventListener('scroll', handleScrollEnd);
+      }, 100);
+      
+      window.addEventListener('scroll', handleScrollEnd);
+      
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('scroll', handleScrollEnd);
+      };
     }
   };
 
+  // Enhanced click handler with touch detection
   const handleNavClick = (id) => {
     const now = Date.now();
-    // Prevent multiple clicks within 500ms
-    if (now - lastClickTime < 500) return;
+    // Prevent multiple clicks within 700ms (increased from 500ms)
+    if (now - lastClickTime < 700) return;
     
     setLastClickTime(now);
     scrollToSection(id);
+  };
+  
+  // Add touch handlers to prevent accidental scrolling from the navigation bar
+  const handleTouchStart = (e) => {
+    setTouchStartY(e.touches[0].clientY);
+  };
+  
+  const handleTouchMove = (e) => {
+    // If touch movement is very small, prevent default to avoid accidental scrolling
+    const touchDiff = Math.abs(e.touches[0].clientY - touchStartY);
+    if (touchDiff < 10) {
+      e.preventDefault();
+    }
   };
 
   return (
@@ -139,8 +195,12 @@ function Navigation() {
         </div>
       </nav>
 
-      {/* Mobile Navigation */}
-      <nav className={styles.mobileNav}>
+      {/* Mobile Navigation with enhanced touch handling */}
+      <nav 
+        className={styles.mobileNav}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+      >
         <div className={styles.mobileContainer}>
           {navItems.map((item) => (
             <button
