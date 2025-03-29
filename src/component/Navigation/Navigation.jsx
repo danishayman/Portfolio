@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Navigation.module.css';
 import { Menu, X, Home, Briefcase, Laptop, GraduationCap, Code, Mail } from 'lucide-react';
 import { useTheme } from '../../common/ThemeContext';
@@ -17,52 +17,36 @@ function Navigation() {
     { id: 'contact', label: 'CONTACT', icon: <Mail size={18} /> },
   ];
 
-  // Add throttle function
-  const throttle = (func, delay) => {
-    let lastCall = 0;
-    return function(...args) {
-      const now = new Date().getTime();
-      if (now - lastCall < delay) {
-        return;
-      }
-      lastCall = now;
-      return func(...args);
-    };
-  };
-
   useEffect(() => {
-    // Cache section elements to avoid repeated DOM queries
-    const sectionElements = navItems
-      .map(item => document.getElementById(item.id))
-      .filter(Boolean);
-    
-    const handleScroll = throttle(() => {
-      const scrollPosition = window.scrollY;
-      const offset = 100; // Adjust this value based on your navbar height
+    const observerOptions = {
+      root: null,
+      rootMargin: '-100px 0px -100px 0px', // Adjust based on your navbar height
+      threshold: 0.1
+    };
 
-      // Find the current section by iterating from bottom to top
-      for (let i = sectionElements.length - 1; i >= 0; i--) {
-        const section = sectionElements[i];
-        const sectionTop = section.offsetTop - offset;
-
-        if (scrollPosition >= sectionTop) {
-          setActiveSection(section.id);
-          break;
+    const observerCallback = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
         }
-      }
+      });
+    };
 
-      // Special case for the top of the page
-      if (scrollPosition < sectionElements[0].offsetTop - offset) {
-        setActiveSection('hero');
-      }
-    }, 100); // Throttle to run at most once every 100ms
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    
+    // Observe all sections
+    navItems.forEach(item => {
+      const element = document.getElementById(item.id);
+      if (element) observer.observe(element);
+    });
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    // Initial check for active section
-    handleScroll();
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    return () => {
+      navItems.forEach(item => {
+        const element = document.getElementById(item.id);
+        if (element) observer.unobserve(element);
+      });
+    };
+  }, [navItems]);
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
