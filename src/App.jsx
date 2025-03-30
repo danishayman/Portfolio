@@ -8,21 +8,30 @@ import Projects from "./component/Projects/Projects";
 import Work from "./component/Work/Work";
 import Contact from "./component/Contact/Contact";
 import Footer from "./component/Footer/Footer";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import SelamatHariRaya from './component/SelamatHariRaya/SelamatHariRaya';
 
 function App() {
   return (
-    <HelmetProvider>
-      <>
-        <Navigation />
-        <Hero />
-        <Education />
-        <Skills />
-        <Projects />
-        <Work />
-        <Contact />
-        <Footer />
-      </>
-    </HelmetProvider>
+    <Router>
+      <Routes>
+        <Route path="/" element={
+          <HelmetProvider>
+            <>
+              <Navigation />
+              <Hero />
+              <Education />
+              <Skills />
+              <Projects />
+              <Work />
+              <Contact />
+              <Footer />
+            </>
+          </HelmetProvider>
+        } />
+        <Route path="/selamathariraya" element={<SelamatHariRaya />} />
+      </Routes>
+    </Router>
   );
 }
 

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selamat Hari Raya - Danish Aiman</title>
+  <style>
+    :root {
+      --background-color: #ffffff;
+      --text-color: #222222;
+    }
+    
+    [data-theme="dark"] {
+      --background-color: #222222;
+      --text-color: #ffffff;
+    }
+    
+    body {
+      font-family: 'Roboto Mono', monospace;
+      background-color: var(--background-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 2rem;
+      text-align: center;
+    }
+    
+    h1 {
+      font-family: 'Rubik', sans-serif;
+      font-size: 3rem;
+      color: var(--text-color);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    
+    p {
+      font-size: 1.5rem;
+      color: var(--text-color);
+      max-width: 800px;
+      margin: 0 auto 2rem;
+    }
+    
+    .container {
+      max-width: 1200px;
+    }
+    
+    .toggle-btn {
+      background: none;
+      border: 1.5px solid var(--text-color);
+      color: var(--text-color);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Roboto Mono', monospace;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&family=Rubik:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>Selamat Hari Raya</h1>
+    <p>Maaf Zahir & Batin</p>
+    <!-- Add more content for your Eid greeting -->
+    <button id="theme-toggle" class="toggle-btn">Toggle Dark Mode</button>
+  </div>
+
+  <script>
+    // Simple dark mode toggle
+    const toggleBtn = document.getElementById('theme-toggle');
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    // Check for saved theme preference or use the system preference
+    const currentTheme = localStorage.getItem('theme') || 
+                         (prefersDarkScheme.matches ? 'dark' : 'light');
+    
+    // Set the initial theme
+    if (currentTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    
+    // Toggle theme on button click
+    toggleBtn.addEventListener('click', () => {
+      let theme = 'light';
+      
+      if (document.documentElement.getAttribute('data-theme') !== 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        theme = 'dark';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+      
+      localStorage.setItem('theme', theme);
+    });
+  </script>
+</body>
+</html> 
