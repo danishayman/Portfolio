@@ -1,14 +1,10 @@
 import React from 'react';
-import styles from './SelamatHariRaya.module.css';
 
 function SelamatHariRaya() {
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Selamat Hari Raya</h1>
-      <p className={styles.message}>
-        Maaf Zahir & Batin
-      </p>
-      {/* Add more content for your Eid greeting page */}
+    <div style={{ padding: '50px', textAlign: 'center' }}>
+      <h1>Selamat Hari Raya</h1>
+      <p>This is a test page</p>
     </div>
   );
 }
