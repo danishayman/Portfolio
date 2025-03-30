@@ -5,7 +5,7 @@ import App from './App.jsx'
 import { ThemeProvider } from './common/ThemeContext.jsx'
 
 
-//Update for streak
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider>
