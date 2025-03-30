@@ -11,16 +11,6 @@ import Contact from "./component/Contact/Contact";
 import Footer from "./component/Footer/Footer";
 import SelamatHariRaya from "./component/SelamatHariRaya/SelamatHariRaya";
 
-// Test component directly in App.jsx
-function TestRaya() {
-  return (
-    <div style={{ padding: '50px', textAlign: 'center' }}>
-      <h1>Test Hari Raya Page</h1>
-      <p>This is a test page</p>
-    </div>
-  );
-}
-
 function App() {
   return (
     <HelmetProvider>
@@ -38,7 +28,7 @@ function App() {
               <Footer />
             </>
           } />
-          <Route path="/selamathariraya" element={<TestRaya />} />
+          <Route path="/selamathariraya" element={<SelamatHariRaya />} />
         </Routes>
       </Router>
     </HelmetProvider>
