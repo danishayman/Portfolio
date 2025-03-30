@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './SelamatHariRaya.module.css';
-import rewardImage from '../../assets/cervical.webp';
+import rewardImage from '../../assets/duit-raya.jpg'; // Adjust the path as necessary
 
 function SelamatHariRaya() {
   const [isOpen, setIsOpen] = useState(false);
