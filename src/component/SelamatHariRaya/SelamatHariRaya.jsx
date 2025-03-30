@@ -7,11 +7,25 @@ function SelamatHariRaya() {
   const [password, setPassword] = useState('');
   const [showReward, setShowReward] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [attemptCount, setAttemptCount] = useState(0);
+  const [attemptsExhausted, setAttemptsExhausted] = useState(false);
 
-  // Add useEffect to handle body scroll
+  // Add useEffect to handle body scroll and check attempts
   useEffect(() => {
     // When component mounts, disable scrolling
     document.body.style.overflow = 'hidden';
+    
+    // Check if we have stored attempts
+    const storedAttempts = localStorage.getItem('passwordAttempts');
+    if (storedAttempts) {
+      const attempts = parseInt(storedAttempts, 10);
+      setAttemptCount(attempts);
+      
+      // Check if attempts are exhausted
+      if (attempts >= 2) {
+        setAttemptsExhausted(true);
+      }
+    }
     
     // When component unmounts, re-enable scrolling
     return () => {
@@ -32,9 +46,18 @@ function SelamatHariRaya() {
 
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
+    
+    // Check if attempts are exhausted
+    if (attemptsExhausted) {
+      return;
+    }
+    
     if (password === "Muhammad Danish Aiman Bin Muhammad Nazir") {
       setPasswordError(false);
       setShowReward(true);
+      
+      // Store success in localStorage to prevent need for future attempts
+      localStorage.setItem('passwordSuccess', 'true');
       
       // Add a slight delay to ensure the image appears before scrolling
       setTimeout(() => {
@@ -45,10 +68,29 @@ function SelamatHariRaya() {
         }
       }, 100);
     } else {
+      // Increment attempt count
+      const newAttemptCount = attemptCount + 1;
+      setAttemptCount(newAttemptCount);
+      localStorage.setItem('passwordAttempts', newAttemptCount.toString());
+      
+      // Check if attempts are now exhausted
+      if (newAttemptCount >= 2) {
+        setAttemptsExhausted(true);
+      }
+      
       setPasswordError(true);
       setShowReward(false);
     }
   };
+
+  // Check for previously successful attempts
+  useEffect(() => {
+    const hasSucceeded = localStorage.getItem('passwordSuccess') === 'true';
+    if (hasSucceeded) {
+      setShowReward(true);
+      setPasswordError(false);
+    }
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -84,7 +126,17 @@ function SelamatHariRaya() {
               <p className={styles.challengeText}>Nak duit raya?</p>
               <form onSubmit={handlePasswordSubmit}>
                 <div className={styles.passwordInputGroup}>
-                  <label htmlFor="password">Password: Nama penuh owner</label>
+                  <label htmlFor="password">
+                    Password: Nama penuh owner 
+                    <span className={styles.passwordWarning}>
+                      Warning: boleh try 2 kali saja
+                    </span>
+                    {!attemptsExhausted && attemptCount > 0 && (
+                      <span className={styles.attemptCounter}>
+                        (Percubaan yang tinggal: {2 - attemptCount})
+                      </span>
+                    )}
+                  </label>
                   <input 
                     type="text" 
                     id="password" 
@@ -92,10 +144,23 @@ function SelamatHariRaya() {
                     onChange={(e) => setPassword(e.target.value)}
                     className={passwordError ? styles.passwordError : ''}
                     placeholder="Enter password"
+                    disabled={attemptsExhausted}
                   />
-                  <button type="submit" className={styles.passwordSubmit}>Submit</button>
+                  <button 
+                    type="submit" 
+                    className={styles.passwordSubmit}
+                    disabled={attemptsExhausted}
+                  >
+                    Submit
+                  </button>
                 </div>
-                {passwordError && <p className={styles.errorMessage}>salah weeiiiii !!!</p>}
+                {passwordError && !attemptsExhausted && <p className={styles.errorMessage}>salah weeiiiii !!!</p>}
+                {attemptsExhausted && !showReward && (
+                  <div className={styles.exhaustedMessage}>
+                    <p>Alamak! Dah habis percubaan. Duit raya melayang... 😭</p>
+                    <p className={styles.exhaustedSubtext}>Cuba lagi tahun depan!</p>
+                  </div>
+                )}
               </form>
               
               {/* Reward Image and Tahniah Message */}
