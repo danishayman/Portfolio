@@ -10,6 +10,7 @@ function SelamatHariRaya() {
   const [passwordError, setPasswordError] = useState(false);
   const [attemptCount, setAttemptCount] = useState(0);
   const [attemptsExhausted, setAttemptsExhausted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Add useEffect to handle body scroll and check attempts
   useEffect(() => {
@@ -33,6 +34,21 @@ function SelamatHariRaya() {
       document.body.style.overflow = 'auto';
     };
   }, []); // Empty dependency array means this runs once on mount and cleanup on unmount
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 600);
+    };
+    
+    // Check initially
+    checkMobile();
+    
+    // Add resize listener
+    window.addEventListener('resize', checkMobile);
+    
+    // Clean up
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleEnvelopeClick = () => {
     if (!isOpen) {
@@ -93,6 +109,19 @@ function SelamatHariRaya() {
     }
   }, []);
 
+  // Add this effect in your component
+  useEffect(() => {
+    // When greeting page is shown, scroll to the password challenge
+    if (showGreeting) {
+      setTimeout(() => {
+        const passwordSection = document.querySelector(`.${styles.passwordChallenge}`);
+        if (passwordSection && window.innerWidth <= 600) {
+          passwordSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }, 1500); // Allow time for animations to complete
+    }
+  }, [showGreeting]);
+
   return (
     <div className={styles.container}>
       {!showGreeting ? (
@@ -118,8 +147,21 @@ function SelamatHariRaya() {
             <h1 className={styles.title}>Selamat Hari Raya</h1>
             <h2 className={styles.subtitle}>Aidilfitri</h2>
             <div className={styles.decoration}></div>
-            <p className={styles.message}>Maaf Zahir & Batin</p>
-            <p className={styles.wishes}>Salam lebaran! Moga Raya kali ini penuh dengan kemaafan <br />(dan duit raya)</p>
+            
+            {/* Conditionally render content differently on mobile */}
+            {isMobile ? (
+              <p className={styles.message} style={{ fontSize: '1.2rem', margin: '10px 0' }}>
+                Maaf Zahir & Batin
+              </p>
+            ) : (
+              <p className={styles.message}>Maaf Zahir & Batin</p>
+            )}
+            
+            {/* Use more compact layout for wishes on mobile */}
+            <p className={styles.wishes}>
+              Salam lebaran! {isMobile ? '' : <br />}
+              Moga Raya kali ini penuh dengan kemaafan (dan duit raya)
+            </p>
             <p className={styles.from}>From: danishayman</p>
             
             {/* Password Challenge Section */}
@@ -180,6 +222,11 @@ function SelamatHariRaya() {
                 </div>
               )}
             </div>
+          </div>
+          
+          {/* Add this scroll indicator for mobile */}
+          <div className={styles.scrollIndicator}>
+            Scroll for more ↓
           </div>
         </div>
       )}
