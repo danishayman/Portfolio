@@ -53,7 +53,7 @@ function SelamatHariRaya() {
             <h2 className={styles.subtitle}>Aidilfitri</h2>
             <div className={styles.decoration}></div>
             <p className={styles.message}>Maaf Zahir & Batin</p>
-            <p className={styles.wishes}>Wishing you and your family joy, peace, and prosperity on this blessed occasion.</p>
+            <p className={styles.wishes}>Salam lebaran! Moga Raya kali ini penuh dengan kemaafan <br />(dan duit raya)</p>
             <p className={styles.from}>From: danishayman</p>
           </div>
         </div>

@@ -6,7 +6,7 @@
   min-height: 100vh;
   height: 100vh;
   padding: 2rem;
-  background-color: #f5f5f5;
+  background-color: #f0f0f0; /* Light grey background */
   text-align: center;
   overflow: hidden;
   position: fixed;
@@ -51,12 +51,12 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: #38B083;
+  background-color: #5A5A5A; /* Medium grey */
   background-image: linear-gradient(135deg, rgba(255,255,255,0.1) 25%, transparent 25%, 
                     transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, 
-                    transparent 75%, transparent); /* Subtle texture */
+                    transparent 75%, transparent);
   background-size: 10px 10px;
-  border-radius: 8px; /* Slightly rounder corners */
+  border-radius: 8px;
   box-shadow: 
     0 15px 35px rgba(0, 0, 0, 0.2),
     0 5px 15px rgba(0, 0, 0, 0.1);
@@ -76,13 +76,13 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #2D9F74;
+  background-color: #424242; /* Darker grey */
   background-image: linear-gradient(135deg, rgba(255,255,255,0.1) 25%, transparent 25%, 
                     transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, 
                     transparent 75%, transparent);
   background-size: 10px 10px;
   transform-origin: top center;
-  transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* More professional easing */
+  transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: 4;
   clip-path: polygon(0 0, 50% 50%, 100% 0);
   box-shadow: 
@@ -100,7 +100,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #38B083;
+  background-color: #5A5A5A; /* Medium grey */
   background-image: 
     linear-gradient(to bottom, 
       rgba(255, 255, 255, 0.1) 0%, 
@@ -170,7 +170,7 @@
 }
 
 .prompt {
-  color: #2D9F74;
+  color: #424242; /* Darker grey for prompt text */
   font-size: 16px;
   font-weight: bold;
   margin: 0;
@@ -273,7 +273,7 @@
   overflow: hidden;
   max-height: calc(90vh - 5rem);
   background-image: none;
-  background: linear-gradient(to bottom right, #ffffff, #f9f9f9);
+  background: linear-gradient(to bottom right, #ffffff, #f5f5f5);
 }
 
 .greetingCard::before, 
@@ -294,7 +294,7 @@
   bottom: 0;
   border-radius: 12px;
   background: linear-gradient(135deg, 
-              rgba(56, 176, 131, 0.05) 0%, 
+              rgba(90, 90, 90, 0.05) 0%, /* Grey tint */
               rgba(255, 255, 255, 0) 50%);
   z-index: 0;
   pointer-events: none;
@@ -303,7 +303,7 @@
 /* ========== Greeting Content Styles ========== */
 .title {
   font-size: 2.2rem;
-  color: #2D9F74;
+  color: #424242; /* Darker grey */
   margin: 10px 0 10px 0;
   font-weight: bold;
   text-transform: uppercase;
@@ -316,7 +316,7 @@
 
 .subtitle {
   font-size: 1.5rem;
-  color: #2D9F74;
+  color: #5A5A5A; /* Medium grey */
   margin: 0 0 15px 0;
   font-weight: 500;
   position: relative;
@@ -329,9 +329,9 @@
   width: 80%;
   height: 2px;
   background: linear-gradient(90deg, 
-              rgba(45, 159, 116, 0.1) 0%, 
-              rgba(45, 159, 116, 0.5) 50%, 
-              rgba(45, 159, 116, 0.1) 100%);
+              rgba(90, 90, 90, 0.1) 0%, 
+              rgba(90, 90, 90, 0.5) 50%, 
+              rgba(90, 90, 90, 0.1) 100%); /* Grey gradient */
   margin: 20px auto;
   position: relative;
   z-index: 1;
@@ -341,7 +341,7 @@
 .message {
   font-size: 1.8rem;
   margin: 25px 0;
-  color: #333;
+  color: #333333; /* Very dark grey */
   font-weight: 500;
   position: relative;
   z-index: 1;
@@ -351,7 +351,7 @@
 
 .wishes {
   font-size: 1.1rem;
-  color: #555;
+  color: #555555; /* Dark grey */
   width: 80%;
   margin: 20px auto;
   line-height: 1.8;
@@ -363,7 +363,7 @@
 .from {
   font-style: italic;
   margin-bottom: 10px;
-  color: #444;
+  color: #666666; /* Medium-dark grey */
   font-size: 1.1rem;
   position: relative;
   z-index: 1;
@@ -375,15 +375,15 @@
 @keyframes pulseGlow {
   0% {
     transform: translate(-50%, -50%) scale(1);
-    box-shadow: 0 5px 15px rgba(45, 159, 116, 0.2);
+    box-shadow: 0 5px 15px rgba(90, 90, 90, 0.2); /* Grey glow */
   }
   50% {
     transform: translate(-50%, -50%) scale(1.08);
-    box-shadow: 0 8px 25px rgba(45, 159, 116, 0.3);
+    box-shadow: 0 8px 25px rgba(90, 90, 90, 0.3); /* Grey glow */
   }
   100% {
     transform: translate(-50%, -50%) scale(1);
-    box-shadow: 0 5px 15px rgba(45, 159, 116, 0.2);
+    box-shadow: 0 5px 15px rgba(90, 90, 90, 0.2); /* Grey glow */
   }
 }
 
