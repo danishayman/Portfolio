@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './SelamatHariRaya.module.css';
+import rewardImage from '../../assets/cervical.webp';
 
 function SelamatHariRaya() {
   const [isOpen, setIsOpen] = useState(false);
@@ -171,7 +172,7 @@ function SelamatHariRaya() {
                     <p className={styles.tahniahText}>Kalau dah fully calimed, cuba lagi tahun depan 😂</p>
                   </div>
                   <img 
-                    src="src\assets\cervical.webp"
+                    src={rewardImage}
                     alt="Reward Image" 
                     className={styles.rewardImage} 
                     onLoad={(e) => e.target.scrollIntoView({ behavior: 'smooth', block: 'nearest' })}

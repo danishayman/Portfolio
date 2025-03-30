@@ -29,6 +29,7 @@ function App() {
             </>
           } />
           <Route path="/selamathariraya" element={<SelamatHariRaya />} />
+          <Route path="/selamathariraya/" element={<SelamatHariRaya />} />
         </Routes>
       </Router>
     </HelmetProvider>
