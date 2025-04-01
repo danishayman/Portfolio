@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Navigation.module.css';
 import { Home, Briefcase, Laptop, GraduationCap, Code, Mail } from 'lucide-react';
 import { useTheme } from '../../common/ThemeContext';
@@ -17,6 +17,7 @@ function Navigation() {
     { id: 'contact', label: 'CONTACT', icon: <Mail size={18} /> },
   ];
 
+  // Handle smooth scrolling with debounce
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (!element) return;
@@ -25,10 +26,43 @@ function Navigation() {
     setIsMenuOpen(false);
     
     const offset = 80; // Navbar height
-    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset - offset;
+    const elementPosition = element.offsetTop - offset;
     
-    window.scrollTo(0, elementPosition);
+    window.scrollTo({
+      top: elementPosition,
+      behavior: 'smooth'
+    });
   };
+
+  // Use IntersectionObserver to update active section while scrolling
+  useEffect(() => {
+    const observers = [];
+    const observerOptions = {
+      rootMargin: '-100px 0px -70% 0px',
+      threshold: 0.1
+    };
+    
+    navItems.forEach(item => {
+      const element = document.getElementById(item.id);
+      if (!element) return;
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveSection(item.id);
+          }
+        });
+      }, observerOptions);
+      
+      observer.observe(element);
+      observers.push(observer);
+    });
+    
+    // Clean up observers on component unmount
+    return () => {
+      observers.forEach(observer => observer.disconnect());
+    };
+  }, []);
 
   return (
     <>
