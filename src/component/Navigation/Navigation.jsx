@@ -14,12 +14,10 @@ if (typeof window !== 'undefined') {
     window.removeEventListener('testPassive', null, opts);
     
     if (supportsPassive) {
-      // Only add passive listeners - don't try to prevent default behavior globally
+      // Use passive listeners for better scroll performance
       window.addEventListener('touchstart', function(){}, { passive: true });
       window.addEventListener('touchmove', function(){}, { passive: true });
-      
-      const wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
-      window.addEventListener(wheelEvent, function(){}, { passive: true });
+      window.addEventListener('scroll', function(){}, { passive: true });
     }
   } catch (e) {
     // Do nothing if it fails
@@ -120,7 +118,7 @@ function Navigation() {
     // Set programmatic scrolling state
     setIsProgrammaticScrolling(true);
     
-    // Calculate position
+    // Calculate position with a more precise offset
     const offset = 80; // Navbar height
     const elementPosition = element.getBoundingClientRect().top + window.pageYOffset - offset;
     
@@ -128,66 +126,34 @@ function Navigation() {
     setActiveSection(id);
     setIsMenuOpen(false);
     
-    // Scroll to the section
-    try {
-      window.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth'
-      });
-    } catch (error) {
-      // Fallback for browsers that don't support smooth scrolling
-      window.scrollTo(0, elementPosition);
+    // Use requestAnimationFrame for smoother scrolling
+    const startPosition = window.pageYOffset;
+    const distance = elementPosition - startPosition;
+    const duration = 800; // ms
+    let startTime = null;
+
+    function animation(currentTime) {
+      if (startTime === null) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      
+      // Easing function for smoother motion
+      const ease = t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      
+      window.scrollTo(0, startPosition + distance * ease(progress));
+      
+      if (timeElapsed < duration) {
+        requestAnimationFrame(animation);
+      } else {
+        window.scrollTo(0, elementPosition);
+        // Short delay before removing programmatic scrolling state
+        setTimeout(() => {
+          setIsProgrammaticScrolling(false);
+        }, 100);
+      }
     }
     
-    // Use a combination of techniques to detect when scrolling has stopped
-    
-    // 1. Set a maximum duration for programmatic scrolling
-    const maxScrollDuration = 2000; // 2 seconds max
-    const scrollTimeout = setTimeout(() => {
-      setIsProgrammaticScrolling(false);
-    }, maxScrollDuration);
-    
-    // 2. Use scroll events to detect natural stop
-    let previousScrollPosition = window.pageYOffset;
-    let scrollStoppedTimer = null;
-    let scrollingHasStopped = false;
-    
-    const checkIfScrollHasStopped = () => {
-      const currentScrollPosition = window.pageYOffset;
-      
-      // If position hasn't changed, scrolling has likely stopped
-      if (currentScrollPosition === previousScrollPosition && !scrollingHasStopped) {
-        scrollingHasStopped = true;
-        setIsProgrammaticScrolling(false);
-        window.removeEventListener('scroll', scrollListener);
-        clearTimeout(scrollTimeout);
-      } else {
-        previousScrollPosition = currentScrollPosition;
-        // Continue checking until max duration
-        scrollStoppedTimer = setTimeout(checkIfScrollHasStopped, 100);
-      }
-    };
-    
-    const scrollListener = () => {
-      // Clear previous timer
-      if (scrollStoppedTimer) {
-        clearTimeout(scrollStoppedTimer);
-      }
-      // Set new timer
-      scrollStoppedTimer = setTimeout(checkIfScrollHasStopped, 100);
-    };
-    
-    window.addEventListener('scroll', scrollListener);
-    
-    // Initial timer to start checking if scrolling has stopped
-    scrollStoppedTimer = setTimeout(checkIfScrollHasStopped, 100);
-    
-    // Cleanup function
-    return () => {
-      clearTimeout(scrollTimeout);
-      clearTimeout(scrollStoppedTimer);
-      window.removeEventListener('scroll', scrollListener);
-    };
+    requestAnimationFrame(animation);
   };
 
   // Enhanced click handler with touch detection
@@ -202,17 +168,17 @@ function Navigation() {
   
   // Improved touch handlers in the Navigation component
   const handleTouchStart = (e) => {
-    setTouchStartY(e.touches[0].clientY);
+    if (!isProgrammaticScrolling) {
+      setTouchStartY(e.touches[0].clientY);
+    }
   };
   
   const handleTouchMove = (e) => {
-    // Don't prevent default scrolling - this may be causing the lock effect
-    // We'll only track the movement but not interfere with the browser's handling
-    const touchDiff = Math.abs(e.touches[0].clientY - touchStartY);
-    
-    // If there's significant movement, update the touch position
-    if (touchDiff > 5) {
-      setTouchStartY(e.touches[0].clientY);
+    if (!isProgrammaticScrolling) {
+      const touchDiff = Math.abs(e.touches[0].clientY - touchStartY);
+      if (touchDiff > 5) {
+        setTouchStartY(e.touches[0].clientY);
+      }
     }
   };
 
