@@ -9,14 +9,10 @@ import Projects from "./component/Projects/Projects";
 import Work from "./component/Work/Work";
 import Contact from "./component/Contact/Contact";
 import Footer from "./component/Footer/Footer";
-import SelamatHariRaya from "./component/SelamatHariRaya/SelamatHariRaya";
 
 function App() {
   return (
     <HelmetProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={
             <>
               <Navigation />
               <Hero />
@@ -27,11 +23,6 @@ function App() {
               <Contact />
               <Footer />
             </>
-          } />
-          <Route path="/selamathariraya" element={<SelamatHariRaya />} />
-          <Route path="/selamathariraya/" element={<SelamatHariRaya />} />
-        </Routes>
-      </Router>
     </HelmetProvider>
   );
 }
