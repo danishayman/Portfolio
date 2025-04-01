@@ -26,18 +26,12 @@ body {
   background-color: var(--background-color);
   justify-content: center;
   margin: 0 auto 60px;
-  -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
-  overscroll-behavior-y: none; /* Prevent overscroll bounce */
-  scroll-behavior: smooth; /* Enable smooth scrolling */
 }
 
 #root {
   display: flex;
   flex-direction: column;
   gap: 60px;
-  min-height: 100vh; /* Ensure full viewport height */
-  position: relative; /* Create stacking context */
-  will-change: transform; /* Optimize for animations */
 }
 
 h1,
@@ -118,12 +112,4 @@ p {
       margin-bottom: 75px;
     }
   }
-}
-
-.is-programmatic-scrolling {
-  overflow: hidden; /* Prevent scrolling during programmatic scroll */
-  position: fixed; /* Fix position during programmatic scroll */
-  width: 100%; /* Maintain full width */
-  height: 100%; /* Maintain full height */
-  touch-action: none; /* Prevent touch scrolling during programmatic scroll */
 }
