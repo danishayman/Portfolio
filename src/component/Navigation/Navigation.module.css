@@ -12,7 +12,7 @@
 
 /* Add transition effect class */
 .transitioning {
-    animation: smoothTransition 0.2s ease;
+    animation: smoothTransition 0.4s ease;
 }
 
 @keyframes smoothTransition {
@@ -137,7 +137,7 @@
     align-items: center;
     justify-content: center;
     flex: 1;
-    transition: all 0.2s ease;
+    transition: all 0.4s ease;
     touch-action: manipulation;
     user-select: none;
     position: relative;
@@ -160,7 +160,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 6px;
-    transition: all 0.2s ease;
+    transition: all 0.4s ease;
 }
 
 .mobileNavItem.active {
