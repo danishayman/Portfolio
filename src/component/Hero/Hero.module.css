@@ -63,20 +63,23 @@
   height: 25px;
   -webkit-tap-highlight-color: transparent;
   object-fit: contain;
-  transition: transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
+  border-radius: 50%;
 }
 
 .colorMode:hover {
   cursor: pointer;
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 5px var(--bt-color));
 }
 
-@keyframes rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .rotating {
-  animation: rotate 0.5s ease-in-out;
+  animation: fadeInOut 0.5s ease-in-out;
 }
 
 .description {

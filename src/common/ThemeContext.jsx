@@ -22,7 +22,7 @@ export const ThemeProvider = ({ children }) => {
     // Reset the transitioning state after the transition has completed
     setTimeout(() => {
       setIsTransitioning(false);
-    }, 300); // Match this with the CSS transition-duration
+    }, 500); // Match this with the fadeInOut animation duration
   };
 
   return (
