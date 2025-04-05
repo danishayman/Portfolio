@@ -13,7 +13,7 @@
     gap: 5px;
     padding: 0.5rem;
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     margin: 0 4px;
   }
 
@@ -29,7 +29,7 @@
 
   img {
     width: 16px;
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
   }
 }
 
@@ -60,7 +60,7 @@ hr {
   border: none;
   background-color: var(--text-color);
   margin: 15px auto;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   opacity: 0.5;
 }
 
@@ -153,7 +153,7 @@ hr:hover {
 }
 
 .skillList span:nth-child(3) {
-  animation-delay: 0.3s;
+  animation-delay: 0.2s;
 }
 
 .skillList span:nth-child(4) {

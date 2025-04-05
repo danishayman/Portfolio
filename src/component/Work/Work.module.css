@@ -39,7 +39,7 @@
     padding: 0.75rem;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     border: 1px solid transparent;
     flex: 0 0 auto;
     min-width: 140px;
@@ -107,7 +107,7 @@
     padding: 1.25rem;
     border-radius: 8px;
     background-color: var(--background-color);
-    animation: fadeIn 0.3s ease-out;
+    animation: fadeIn 0.2s ease-out;
     width: 100%;
     box-sizing: border-box;
 }
@@ -180,7 +180,7 @@
     object-fit: cover;
     border-radius: 8px;
     border: 2px solid var(--text-color);
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
 }
 
 .images img:hover {
@@ -189,7 +189,7 @@
 
 .dropdownArrow {
     margin-left: 1rem;
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
     color: var(--text-color);
 }
 
@@ -290,7 +290,7 @@
         padding: 1rem;
         margin-bottom: 0.5rem;
         border: 2px solid transparent;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
         border-radius: 8px;
     }
     
