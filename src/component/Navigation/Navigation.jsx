@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styles from './Navigation.module.css';
 import { Home, Briefcase, Laptop, GraduationCap, Code, Mail } from 'lucide-react';
 import { useTheme } from '../../common/ThemeContext';
 
 function Navigation() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState('hero');
   const { theme, toggleTheme, isTransitioning } = useTheme();
 
   const navItems = [
@@ -17,68 +16,94 @@ function Navigation() {
     { id: 'contact', label: 'CONTACT', icon: <Mail size={18} /> },
   ];
 
-  // Handle smooth scrolling with debounce
-  const scrollToSection = (id) => {
+  // Throttle function to limit how often a function can run
+  const throttle = (func, delay) => {
+    let lastCall = 0;
+    return (...args) => {
+      const now = new Date().getTime();
+      if (now - lastCall < delay) {
+        return;
+      }
+      lastCall = now;
+      return func(...args);
+    };
+  };
+
+  // Calculate which section is currently most visible in the viewport
+  const calculateActiveSection = useCallback(() => {
+    // Don't update active section during programmatic scrolling
+    if (window.isScrollingProgrammatically) return;
+
+    const scrollPosition = window.scrollY + 150; // Offset for navbar height + some padding
+    
+    // Find which section is currently most in view
+    let currentSection = navItems[0].id;
+    let maxVisibleHeight = 0;
+    
+    navItems.forEach(({ id }) => {
+      const element = document.getElementById(id);
+      if (!element) return;
+      
+      const rect = element.getBoundingClientRect();
+      const elementTop = rect.top + window.scrollY;
+      const elementBottom = elementTop + rect.height;
+      
+      // Calculate how much of the element is visible in the viewport
+      const visibleTop = Math.max(elementTop, window.scrollY);
+      const visibleBottom = Math.min(elementBottom, window.scrollY + window.innerHeight);
+      const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+      
+      if (visibleHeight > maxVisibleHeight) {
+        maxVisibleHeight = visibleHeight;
+        currentSection = id;
+      }
+    });
+    
+    setActiveSection(currentSection);
+  }, [navItems]);
+
+  // Smooth scroll to section with better mobile handling
+  const scrollToSection = useCallback((id) => {
     const element = document.getElementById(id);
     if (!element) return;
     
-    setActiveSection(id);
-    setIsMenuOpen(false);
+    // Tell our scroll handler we're doing a programmatic scroll
+    window.isScrollingProgrammatically = true;
     
+    // Calculate position
     const offset = 80; // Navbar height
     const elementPosition = element.offsetTop - offset;
     
+    // Set active immediately for better UX feedback
+    setActiveSection(id);
+    
+    // Perform smooth scroll
     window.scrollTo({
       top: elementPosition,
       behavior: 'smooth'
     });
-  };
+    
+    // Reset the flag after scrolling animation likely completes
+    setTimeout(() => {
+      window.isScrollingProgrammatically = false;
+    }, 1000);
+  }, []);
 
-  // Use IntersectionObserver to update active section while scrolling
+  // Set up scroll event listener with throttling
   useEffect(() => {
-    const observers = [];
-    const observerOptions = {
-      rootMargin: '-100px 0px -50% 0px',
-      threshold: 0.15
-    };
-    
-    let isScrolling = false;
-    let scrollTimeout;
-    
-    // Add scroll event listener to prevent updates during active scrolling
-    const handleScroll = () => {
-      isScrolling = true;
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        isScrolling = false;
-      }, 100); // Wait for scroll to fully stop before allowing section changes
-    };
+    const handleScroll = throttle(() => {
+      calculateActiveSection();
+    }, 150); // Throttle to every 150ms
     
     window.addEventListener('scroll', handleScroll);
     
-    navItems.forEach(item => {
-      const element = document.getElementById(item.id);
-      if (!element) return;
-      
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !isScrolling) {
-            setActiveSection(item.id);
-          }
-        });
-      }, observerOptions);
-      
-      observer.observe(element);
-      observers.push(observer);
-    });
+    // Calculate initial active section
+    calculateActiveSection();
     
-    // Clean up observers on component unmount
     return () => {
-      observers.forEach(observer => observer.disconnect());
       window.removeEventListener('scroll', handleScroll);
-      clearTimeout(scrollTimeout);
     };
-  }, []);
+  }, [calculateActiveSection]);
 
   return (
     <>
