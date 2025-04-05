@@ -38,9 +38,23 @@ function Navigation() {
   useEffect(() => {
     const observers = [];
     const observerOptions = {
-      rootMargin: '-100px 0px -70% 0px',
-      threshold: 0.1
+      rootMargin: '-100px 0px -50% 0px',
+      threshold: 0.15
     };
+    
+    let isScrolling = false;
+    let scrollTimeout;
+    
+    // Add scroll event listener to prevent updates during active scrolling
+    const handleScroll = () => {
+      isScrolling = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+      }, 100); // Wait for scroll to fully stop before allowing section changes
+    };
+    
+    window.addEventListener('scroll', handleScroll);
     
     navItems.forEach(item => {
       const element = document.getElementById(item.id);
@@ -48,7 +62,7 @@ function Navigation() {
       
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && !isScrolling) {
             setActiveSection(item.id);
           }
         });
@@ -61,6 +75,8 @@ function Navigation() {
     // Clean up observers on component unmount
     return () => {
       observers.forEach(observer => observer.disconnect());
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
     };
   }, []);
 
