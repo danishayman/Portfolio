@@ -29,37 +29,35 @@ function Navigation() {
     };
   };
 
-  // Calculate which section is currently most visible in the viewport
+  // Simple threshold-based approach to determine active section
   const calculateActiveSection = useCallback(() => {
     // Don't update active section during programmatic scrolling
     if (window.isScrollingProgrammatically) return;
 
-    const scrollPosition = window.scrollY + 150; // Offset for navbar height + some padding
+    const scrollPosition = window.scrollY;
+    const offset = 100; // Offset for navbar height + some padding
     
-    // Find which section is currently most in view
-    let currentSection = navItems[0].id;
-    let maxVisibleHeight = 0;
-    
-    navItems.forEach(({ id }) => {
+    // Find the section that has passed its top boundary but not its bottom boundary
+    // Go through sections in reverse to prioritize later sections when at boundaries
+    for (let i = navItems.length - 1; i >= 0; i--) {
+      const { id } = navItems[i];
       const element = document.getElementById(id);
-      if (!element) return;
+      if (!element) continue;
       
-      const rect = element.getBoundingClientRect();
-      const elementTop = rect.top + window.scrollY;
-      const elementBottom = elementTop + rect.height;
+      const sectionTop = element.offsetTop - offset;
       
-      // Calculate how much of the element is visible in the viewport
-      const visibleTop = Math.max(elementTop, window.scrollY);
-      const visibleBottom = Math.min(elementBottom, window.scrollY + window.innerHeight);
-      const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-      
-      if (visibleHeight > maxVisibleHeight) {
-        maxVisibleHeight = visibleHeight;
-        currentSection = id;
+      // For the first section, make it active when at the top of the page
+      if (i === 0 && scrollPosition < sectionTop) {
+        setActiveSection(id);
+        return;
       }
-    });
-    
-    setActiveSection(currentSection);
+      
+      // For all sections, make active when scrolled past its top
+      if (scrollPosition >= sectionTop) {
+        setActiveSection(id);
+        return;
+      }
+    }
   }, [navItems]);
 
   // Smooth scroll to section with better mobile handling
@@ -93,7 +91,7 @@ function Navigation() {
   useEffect(() => {
     const handleScroll = throttle(() => {
       calculateActiveSection();
-    }, 150); // Throttle to every 150ms
+    }, 200); // Increased throttle to 200ms for more stability
     
     window.addEventListener('scroll', handleScroll);
     
