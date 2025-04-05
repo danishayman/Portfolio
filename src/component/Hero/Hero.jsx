@@ -18,7 +18,7 @@ import { useTheme } from "../../common/ThemeContext";
 import { useState, useEffect } from "react";
 
 function Hero() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme, isTransitioning } = useTheme();
   const themeIcon = theme === "light" ? sun : moon;
   const twitterIcon = theme === "light" ? twitterLight : twitterDark;
   const githubIcon = theme === "light" ? githubLight : githubDark;
@@ -71,7 +71,7 @@ function Hero() {
           </div>
 
           <img
-            className={styles.colorMode}
+            className={`${styles.colorMode} ${isTransitioning ? styles.rotating : ''}`}
             src={themeIcon}
             alt="Colour mode icon"
             onClick={handleThemeToggle}

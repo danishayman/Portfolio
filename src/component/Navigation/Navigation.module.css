@@ -10,6 +10,17 @@
     user-select: none;
 }
 
+/* Add transition effect class */
+.transitioning {
+    animation: smoothTransition 0.3s ease;
+}
+
+@keyframes smoothTransition {
+    0% { opacity: 0.8; }
+    50% { opacity: 0.9; }
+    100% { opacity: 1; }
+}
+
 .container {
     height: 50px;
     max-width: 1200px;

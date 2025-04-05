@@ -6,7 +6,7 @@ import { useTheme } from '../../common/ThemeContext';
 function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme, isTransitioning } = useTheme();
 
   const navItems = [
     { id: 'hero', label: 'HOME', icon: <Home size={18} /> },
@@ -67,7 +67,7 @@ function Navigation() {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className={styles.desktopNav}>
+      <nav className={`${styles.desktopNav} ${isTransitioning ? styles.transitioning : ''}`}>
         <div className={styles.container}>
           <div className={styles.menuItems}>
             {navItems.map((item) => (
@@ -84,7 +84,7 @@ function Navigation() {
       </nav>
 
       {/* Mobile Navigation */}
-      <nav className={styles.mobileNav}>
+      <nav className={`${styles.mobileNav} ${isTransitioning ? styles.transitioning : ''}`}>
         <div className={styles.mobileContainer}>
           {navItems.map((item) => (
             <button
