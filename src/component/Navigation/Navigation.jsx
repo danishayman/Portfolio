@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import styles from './Navigation.module.css';
 import { Home, Briefcase, Laptop, GraduationCap, Code, Mail } from 'lucide-react';
 import { useTheme } from '../../common/ThemeContext';
@@ -6,6 +6,8 @@ import { useTheme } from '../../common/ThemeContext';
 function Navigation() {
   const [activeSection, setActiveSection] = useState('hero');
   const { theme, toggleTheme, isTransitioning } = useTheme();
+  const isScrollingRef = useRef(false);
+  const scrollTimeoutRef = useRef(null);
 
   const navItems = [
     { id: 'hero', label: 'HOME', icon: <Home size={18} /> },
@@ -16,8 +18,8 @@ function Navigation() {
     { id: 'contact', label: 'CONTACT', icon: <Mail size={18} /> },
   ];
 
-  // Throttle function to limit how often a function can run
-  const throttle = (func, delay) => {
+  // Improved throttle function with proper reference handling
+  const throttle = useCallback((func, delay) => {
     let lastCall = 0;
     return (...args) => {
       const now = new Date().getTime();
@@ -25,83 +27,125 @@ function Navigation() {
         return;
       }
       lastCall = now;
-      return func(...args);
+      func(...args);
     };
-  };
+  }, []);
 
-  // Simple threshold-based approach to determine active section
+  // Calculate active section with more stable approach
   const calculateActiveSection = useCallback(() => {
-    // Don't update active section during programmatic scrolling
-    if (window.isScrollingProgrammatically) return;
+    // Don't update during programmatic scrolling
+    if (isScrollingRef.current) return;
 
     const scrollPosition = window.scrollY;
-    const offset = 100; // Offset for navbar height + some padding
+    const viewportHeight = window.innerHeight;
+    const offset = 100; // Offset for navbar height + padding
     
-    // Find the section that has passed its top boundary but not its bottom boundary
-    // Go through sections in reverse to prioritize later sections when at boundaries
-    for (let i = navItems.length - 1; i >= 0; i--) {
-      const { id } = navItems[i];
+    // Find the section that is most visible in the viewport
+    let maxVisibleSection = null;
+    let maxVisiblePercentage = 0;
+    
+    navItems.forEach(({ id }) => {
       const element = document.getElementById(id);
-      if (!element) continue;
+      if (!element) return;
       
-      const sectionTop = element.offsetTop - offset;
+      const rect = element.getBoundingClientRect();
+      const sectionHeight = rect.height;
+      const visibleTop = Math.max(rect.top, 0);
+      const visibleBottom = Math.min(rect.bottom, viewportHeight);
       
-      // For the first section, make it active when at the top of the page
-      if (i === 0 && scrollPosition < sectionTop) {
-        setActiveSection(id);
-        return;
+      // Calculate how much of the section is visible as a percentage
+      if (visibleBottom > visibleTop) {
+        const visibleHeight = visibleBottom - visibleTop;
+        const visiblePercentage = (visibleHeight / sectionHeight) * 100;
+        
+        if (visiblePercentage > maxVisiblePercentage) {
+          maxVisiblePercentage = visiblePercentage;
+          maxVisibleSection = id;
+        }
       }
-      
-      // For all sections, make active when scrolled past its top
-      if (scrollPosition >= sectionTop) {
-        setActiveSection(id);
-        return;
-      }
+    });
+    
+    // Special case for the top of the page (hero section)
+    if (scrollPosition < offset) {
+      maxVisibleSection = 'hero';
+    }
+    
+    if (maxVisibleSection) {
+      setActiveSection(maxVisibleSection);
     }
   }, [navItems]);
 
-  // Smooth scroll to section with better mobile handling
+  // Improved scroll to section function
   const scrollToSection = useCallback((id) => {
     const element = document.getElementById(id);
     if (!element) return;
     
-    // Tell our scroll handler we're doing a programmatic scroll
-    window.isScrollingProgrammatically = true;
+    // Clean up any existing timeout
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
     
-    // Calculate position
+    // Mark that we're starting programmatic scrolling
+    isScrollingRef.current = true;
+    
+    // Calculate position with a consistent offset
     const offset = 80; // Navbar height
     const elementPosition = element.offsetTop - offset;
     
-    // Set active immediately for better UX feedback
+    // Set active section right away for better UX
     setActiveSection(id);
     
-    // Perform smooth scroll
-    window.scrollTo({
-      top: elementPosition,
-      behavior: 'smooth'
+    // Use requestAnimationFrame for smoother animation start
+    requestAnimationFrame(() => {
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
+      
+      // Create a detection system for when scrolling ends
+      const checkScrollEnd = () => {
+        const previousScrollTop = window.scrollY;
+        
+        // Check if scrolling has stopped after a short delay
+        scrollTimeoutRef.current = setTimeout(() => {
+          if (previousScrollTop === window.scrollY) {
+            // Scrolling has stopped
+            isScrollingRef.current = false;
+            
+            // Ensure the right section is active after scrolling
+            calculateActiveSection();
+          } else {
+            // Still scrolling, check again
+            checkScrollEnd();
+          }
+        }, 100);
+      };
+      
+      checkScrollEnd();
     });
-    
-    // Reset the flag after scrolling animation likely completes
-    setTimeout(() => {
-      window.isScrollingProgrammatically = false;
-    }, 1000);
-  }, []);
+  }, [calculateActiveSection]);
 
-  // Set up scroll event listener with throttling
+  // Set up improved scroll event listener
   useEffect(() => {
     const handleScroll = throttle(() => {
       calculateActiveSection();
-    }, 200); // Increased throttle to 200ms for more stability
+    }, 150);
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
-    // Calculate initial active section
-    calculateActiveSection();
+    // Calculate initial section after a short delay to ensure DOM is ready
+    const initialTimeout = setTimeout(() => {
+      calculateActiveSection();
+    }, 100);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      clearTimeout(initialTimeout);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
     };
-  }, [calculateActiveSection]);
+  }, [calculateActiveSection, throttle]);
 
   return (
     <>
