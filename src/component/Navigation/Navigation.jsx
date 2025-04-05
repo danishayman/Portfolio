@@ -38,11 +38,13 @@ function Navigation() {
 
     const scrollPosition = window.scrollY;
     const viewportHeight = window.innerHeight;
-    const offset = 100; // Offset for navbar height + padding
+    const isMobile = window.innerWidth <= 768;
+    const offset = isMobile ? viewportHeight * 0.08 : 100; // Consistent with scroll offset
     
     // Find the section that is most visible in the viewport
     let maxVisibleSection = null;
     let maxVisiblePercentage = 0;
+    let mostlyInView = false;
     
     navItems.forEach(({ id }) => {
       const element = document.getElementById(id);
@@ -61,6 +63,11 @@ function Navigation() {
         if (visiblePercentage > maxVisiblePercentage) {
           maxVisiblePercentage = visiblePercentage;
           maxVisibleSection = id;
+          
+          // If a section is mostly in view, prioritize it
+          if (visiblePercentage > (isMobile ? 30 : 50)) {
+            mostlyInView = true;
+          }
         }
       }
     });
@@ -68,9 +75,11 @@ function Navigation() {
     // Special case for the top of the page (hero section)
     if (scrollPosition < offset) {
       maxVisibleSection = 'hero';
+      mostlyInView = true;
     }
     
-    if (maxVisibleSection) {
+    // Only update if we have a section that is significantly in view
+    if (maxVisibleSection && (mostlyInView || maxVisiblePercentage > (isMobile ? 15 : 25))) {
       setActiveSection(maxVisibleSection);
     }
   }, [navItems]);
@@ -88,9 +97,13 @@ function Navigation() {
     // Mark that we're starting programmatic scrolling
     isScrollingRef.current = true;
     
+    // Calculate dynamic offset based on viewport height for better mobile experience
+    const viewportHeight = window.innerHeight;
+    const isMobile = window.innerWidth <= 768;
+    const offset = isMobile ? viewportHeight * 0.08 : 80; // 8% of viewport height on mobile
+    
     // Calculate position with a consistent offset
-    const offset = 80; // Navbar height
-    const elementPosition = element.offsetTop - offset;
+    const elementPosition = element.getBoundingClientRect().top + window.scrollY - offset;
     
     // Set active section right away for better UX
     setActiveSection(id);
@@ -112,13 +125,17 @@ function Navigation() {
             // Scrolling has stopped
             isScrollingRef.current = false;
             
-            // Ensure the right section is active after scrolling
-            calculateActiveSection();
+            // Wait a bit longer before recalculating on mobile
+            setTimeout(() => {
+              if (!isScrollingRef.current) {
+                calculateActiveSection();
+              }
+            }, isMobile ? 200 : 50);
           } else {
             // Still scrolling, check again
             checkScrollEnd();
           }
-        }, 100);
+        }, isMobile ? 150 : 100);
       };
       
       checkScrollEnd();
@@ -127,9 +144,12 @@ function Navigation() {
 
   // Set up improved scroll event listener
   useEffect(() => {
+    const isMobile = window.innerWidth <= 768;
+    const throttleTime = isMobile ? 250 : 150; // Longer throttle time for mobile
+    
     const handleScroll = throttle(() => {
       calculateActiveSection();
-    }, 150);
+    }, throttleTime);
     
     window.addEventListener('scroll', handleScroll, { passive: true });
     
@@ -138,8 +158,18 @@ function Navigation() {
       calculateActiveSection();
     }, 100);
     
+    // Handle window resize to adjust for mobile/desktop changes
+    const handleResize = throttle(() => {
+      // Recalculate section after resize
+      isScrollingRef.current = false;
+      calculateActiveSection();
+    }, 200);
+    
+    window.addEventListener('resize', handleResize, { passive: true });
+    
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
       clearTimeout(initialTimeout);
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
