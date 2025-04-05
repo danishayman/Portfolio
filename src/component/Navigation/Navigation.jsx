@@ -1,14 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import styles from './Navigation.module.css';
 import { Home, Briefcase, Laptop, GraduationCap, Code, Mail } from 'lucide-react';
 import { useTheme } from '../../common/ThemeContext';
 
 function Navigation() {
   const [activeSection, setActiveSection] = useState('hero');
-  const { theme, toggleTheme, isTransitioning } = useTheme();
-  const isManualScrolling = useRef(false);
-  const scrollEndTimeout = useRef(null);
-  const observerRef = useRef(null);
+  const { isTransitioning } = useTheme();
+  const scrollLock = useRef(false);
+  const mobileNavRef = useRef(null);
+  const resizeObserver = useRef(null);
 
   const navItems = [
     { id: 'hero', label: 'HOME', icon: <Home size={18} /> },
@@ -19,132 +19,102 @@ function Navigation() {
     { id: 'contact', label: 'CONTACT', icon: <Mail size={18} /> },
   ];
 
-  // Setup Intersection Observer for section detection
-  useEffect(() => {
-    // Clean up any existing observer
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
+  // Simplified scroll handler with intersection observer
+  const updateActiveSection = useCallback(() => {
+    if (scrollLock.current) return;
 
-    // Get viewport height and calculate threshold
-    const viewportHeight = window.innerHeight;
-    const isMobile = window.innerWidth <= 768;
-    
-    // Create options for the observer
-    const options = {
-      rootMargin: isMobile ? `-${viewportHeight * 0.1}px 0px -${viewportHeight * 0.6}px 0px` : 
-                             `-100px 0px -${viewportHeight * 0.5}px 0px`,
-      threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5]
-    };
-
-    // Track sections that are currently in view
-    const visibleSections = new Map();
-
-    const handleIntersection = (entries) => {
-      // Skip intersection updates during manual scrolling
-      if (isManualScrolling.current) return;
-
-      entries.forEach(entry => {
-        // Update visibility status for this section
-        visibleSections.set(entry.target.id, {
-          id: entry.target.id,
-          visible: entry.isIntersecting,
-          ratio: entry.intersectionRatio,
-          // Track top position for tie-breaking
-          position: entry.boundingClientRect.top
-        });
-      });
-      
-      // Find the most visible section using a weighted approach
-      // giving preference to sections near the top of the screen
-      let bestSection = null;
-      let bestScore = -1;
-      
-      visibleSections.forEach(section => {
-        if (section.visible) {
-          // Weight score by both visibility ratio and position from top
-          // Lower position (closer to top) gets higher priority
-          const positionScore = 1 - (Math.max(0, section.position) / viewportHeight);
-          const visibilityScore = section.ratio;
-          const score = visibilityScore * 0.7 + positionScore * 0.3;
-          
-          if (score > bestScore) {
-            bestScore = score;
-            bestSection = section.id;
-          }
-        }
-      });
-      
-      // Special case for top of page
-      if (window.scrollY < viewportHeight * 0.1) {
-        bestSection = 'hero';
-      }
-      
-      // Only update if we have a valid section
-      if (bestSection && bestSection !== activeSection) {
-        setActiveSection(bestSection);
-      }
-    };
-
-    // Create and setup observer
-    observerRef.current = new IntersectionObserver(handleIntersection, options);
-    
-    // Observe all sections
-    navItems.forEach(({ id }) => {
-      const element = document.getElementById(id);
-      if (element) {
-        observerRef.current.observe(element);
-        // Initialize the visibility map
-        visibleSections.set(id, { id, visible: false, ratio: 0, position: Infinity });
-      }
+    const sections = navItems.map(item => document.getElementById(item.id));
+    const visibleSections = sections.filter(section => {
+      if (!section) return false;
+      const rect = section.getBoundingClientRect();
+      return rect.top <= window.innerHeight * 0.5 && rect.bottom >= window.innerHeight * 0.5;
     });
 
-    // Clean up observer on unmount
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [activeSection, navItems]);
+    if (visibleSections.length > 0) {
+      const topSection = visibleSections.reduce((prev, current) => 
+        prev.getBoundingClientRect().top < current.getBoundingClientRect().top ? prev : current
+      );
+      setActiveSection(topSection.id);
+    }
+  }, [navItems]);
 
-  // Improved scroll to section function
-  const scrollToSection = (id) => {
+  // Debounced scroll handler
+  const handleScroll = useCallback(() => {
+    if (!scrollLock.current) {
+      requestAnimationFrame(updateActiveSection);
+    }
+  }, [updateActiveSection]);
+
+  // Improved scroll-to-section with momentum handling
+  const scrollToSection = useCallback((id) => {
     const element = document.getElementById(id);
     if (!element) return;
-    
-    // Clear any existing timeout
-    if (scrollEndTimeout.current) {
-      clearTimeout(scrollEndTimeout.current);
-    }
-    
-    // Mark that we're starting programmatic scrolling
-    isManualScrolling.current = true;
-    
-    // Set active section immediately for better UX feedback
+
+    scrollLock.current = true;
     setActiveSection(id);
-    
-    // Calculate offset based on viewport
-    const viewportHeight = window.innerHeight;
+
     const isMobile = window.innerWidth <= 768;
-    const offset = isMobile ? viewportHeight * 0.08 : 80;
-    
-    // Get element position with offset
-    const elementPosition = element.getBoundingClientRect().top + window.scrollY - offset;
-    
-    // Scroll with smooth behavior
+    const navHeight = mobileNavRef.current?.offsetHeight || 0;
+    const offset = isMobile ? navHeight + 20 : 80;
+
     window.scrollTo({
-      top: elementPosition,
+      top: element.offsetTop - offset,
       behavior: 'smooth'
     });
+
+    // Handle momentum scroll on iOS
+    let lastScrollPosition = window.scrollY;
+    const momentumCheck = setInterval(() => {
+      if (Math.abs(window.scrollY - lastScrollPosition) < 1) {
+        clearInterval(momentumCheck);
+        scrollLock.current = false;
+        updateActiveSection();
+      }
+      lastScrollPosition = window.scrollY;
+    }, 100);
+
+    // Fallback unlock
+    setTimeout(() => {
+      scrollLock.current = false;
+      clearInterval(momentumCheck);
+    }, 2000);
+  }, [updateActiveSection]);
+
+  // Setup event listeners and observers
+  useEffect(() => {
+    const passiveOptions = { passive: true };
     
-    // Allow time for the scroll to complete before re-enabling intersection observer
-    // This is a more reliable approach than trying to detect when scrolling has ended
-    const scrollDuration = Math.min(1000, Math.abs(window.scrollY - elementPosition) / 3);
-    
-    scrollEndTimeout.current = setTimeout(() => {
-      isManualScrolling.current = false;
-    }, scrollDuration + 100); // Add a small buffer
-  };
+    // Use IntersectionObserver for better performance
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !scrollLock.current) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    }, {
+      rootMargin: '-50% 0px -50% 0px',
+      threshold: 0
+    });
+
+    navItems.forEach(item => {
+      const element = document.getElementById(item.id);
+      if (element) observer.observe(element);
+    });
+
+    // Handle resize events with observer
+    resizeObserver.current = new ResizeObserver(() => {
+      updateActiveSection();
+    });
+    resizeObserver.current.observe(document.documentElement);
+
+    window.addEventListener('scroll', handleScroll, passiveOptions);
+
+    return () => {
+      observer.disconnect();
+      resizeObserver.current?.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [handleScroll, navItems, updateActiveSection]);
 
   return (
     <>
@@ -166,7 +136,10 @@ function Navigation() {
       </nav>
 
       {/* Mobile Navigation */}
-      <nav className={`${styles.mobileNav} ${isTransitioning ? styles.transitioning : ''}`}>
+      <nav 
+        ref={mobileNavRef}
+        className={`${styles.mobileNav} ${isTransitioning ? styles.transitioning : ''}`}
+      >
         <div className={styles.mobileContainer}>
           {navItems.map((item) => (
             <button
