@@ -3,24 +3,24 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem;
-    gap: 3rem;
+    padding: 1.5rem;
+    gap: 2rem;
 }
 
-.container h2 {
-    font-size: 2rem;
+.container h1 {
+    margin-bottom: 0.5rem;
 }
 
 .workContainer {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
     width: 100%;
     max-width: 1000px;
 }
 
 .tabs {
-    display: flex;
+    display: none; /* Hide tabs on mobile */
     flex-direction: row;
     overflow-x: auto;
     padding-bottom: 0.5rem;
@@ -47,12 +47,12 @@
 }
 
 .tab:hover {
-    background-color: var(--card-bg);
+    background-color: var(--background-color);
     transform: translateY(3px);
 }
 
 .tab.active {
-    background-color: var(--card-bg);
+    background-color: var(--background-color);
     border: 1px solid var(--text-color);
     box-shadow: 0 3px var(--box-shadow-color);
     transform: translateY(3px);
@@ -68,39 +68,71 @@
     opacity: 0.8;
 }
 
+/* Fix dropdown styling for mobile */
+.mobileDropdown {
+    display: block;
+    position: relative;
+    width: 100%;
+    margin-bottom: 0;
+    z-index: 10;
+}
+
+.dropdownToggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--background-color);
+    box-shadow: 3px 3px var(--box-shadow-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dropdownSelected h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+}
+
+.dropdownSelected p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Mobile content box */
 .content {
     border: 2px solid var(--border-color);
     box-shadow: 5px 5px var(--box-shadow-color);
-    padding: 2rem;
+    padding: 1.25rem;
     border-radius: 8px;
-    background-color: var(--card-bg);
+    background-color: var(--background-color);
     animation: fadeIn 0.3s ease-out;
-}
-
-.content:hover {
-    cursor: default;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .header {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .header h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+    margin-bottom: 0.25rem;
 }
 
 .company {
-    font-size: 1.1rem;
+    font-size: 1rem;
     opacity: 0.9;
     margin-bottom: 0.25rem;
 }
 
 .duration {
-    font-size: 1rem;
+    font-size: 0.9rem;
     opacity: 0.7;
 }
 
+/* Mobile description list */
 .description {
     font-family: "Roboto Mono", monospace;
     list-style: none;
@@ -109,37 +141,45 @@
     flex-direction: column;
     gap: 1rem;
     color: var(--text-color);
+    margin-top: 1rem;
+    font-size: 0.9rem;
 }
 
 .description li {
-    padding-left: 1.5rem;
     position: relative;
-    line-height: 1.6;
+    padding-left: 1.5rem;
+    line-height: 1.2;
 }
 
 .description li::before {
     content: "•";
     position: absolute;
     left: 0.5rem;
-    opacity: 0.6;
+    opacity: 0.8;
+}
+
+.dropdownSelected {
+    flex: 1;
+}
+
+.dropdownToggle:hover {
+    transform: translateY(2px);
+    box-shadow: 2px 2px var(--box-shadow-color);
 }
 
 .images {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Always show 2 images per row even on mobile */
-    gap: 0.5rem; /* Smaller gap for mobile */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
 }
 
 .images img {
     width: 100%;
     aspect-ratio: 1 / 1;
-    /* Ensures the image is square */
     object-fit: cover;
-    /* Ensures the image fills the square without distortion */
     border-radius: 8px;
-    /* Optional: Adds rounded corners */
     border: 2px solid var(--text-color);
-    /* Optional: Image border */
     transition: transform 0.3s ease;
 }
 
@@ -147,44 +187,162 @@
     transform: scale(1.01);
 }
 
+.dropdownArrow {
+    margin-left: 1rem;
+    transition: transform 0.3s ease;
+    color: var(--text-color);
+}
+
+.dropdownArrow svg {
+    fill: none;
+    stroke: var(--text-color);
+}
+
+.dropdownArrow.open {
+    transform: rotate(180deg);
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    width: 100%;
+    background-color: var(--background-color);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 3px 3px var(--box-shadow-color);
+    overflow: hidden;
+    z-index: 100;
+    animation: dropdownFadeIn 0.2s ease-out;
+}
+
+.dropdownItem {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dropdownItem:last-child {
+    border-bottom: none;
+}
+
+.dropdownItem:hover {
+    background-color: rgba(128, 128, 128, 0.1);
+}
+
+.dropdownItem h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+}
+
+.dropdownItem p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @media (width >=800px) {
     .container {
         padding: 4rem;
+        gap: 3rem;
+    }
+
+    .container h1 {
+        margin-bottom: 2rem;
     }
 
     .workContainer {
         flex-direction: row;
         gap: 3rem;
+        align-items: stretch;
+    }
+    
+    /* Hide dropdown on desktop */
+    .mobileDropdown {
+        display: none;
     }
 
     .tabs {
+        display: flex; /* Show tabs on desktop */
         min-width: 300px;
+        max-width: 300px;
         flex-direction: column;
         overflow-x: visible;
         padding-bottom: 0;
+        flex-shrink: 0;
+        margin-top: 0;
     }
     
     .tab {
         text-align: left;
         min-width: unset;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        border-radius: 8px;
     }
     
     .tab:hover {
         transform: translateX(10px);
+        background-color: var(--background-color);
+        border-color: var(--border-color);
     }
     
     .tab.active {
+        background-color: var(--background-color);
+        border: 2px solid var(--border-color);
         box-shadow: 5px 5px var(--box-shadow-color);
         transform: translateX(10px);
     }
 
     .content {
         flex: 1;
+        max-width: calc(100% - 350px);
+        height: fit-content;
+        align-self: flex-start;
+        margin-top: 0;
+        padding: 2rem;
     }
-    
+
+    /* Ensure the header in desktop view has proper spacing */
+    .header {
+        margin-bottom: 2rem;
+    }
+
+    .header h3 {
+        font-size: 1.7rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .company {
+        font-size: 1.2rem;
+    }
+
+    .duration {
+        font-size: 1.1rem;
+    }
+
+    .description {
+        font-size: 1rem;
+        margin-top: 1.5rem;
+    }
+
     .images {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 1rem;
+        margin-bottom: 2rem;
     }
 }
 

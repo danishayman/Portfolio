@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './Work.module.css';
 import gsc1 from "../../assets/gsc1.webp";
 import gsc2 from "../../assets/gsc2.webp";
@@ -13,6 +13,8 @@ function Work() {
     const [activeTab, setActiveTab] = useState(0);
     const [imagesLoaded, setImagesLoaded] = useState({});
     const [isFirstLoad, setIsFirstLoad] = useState(true);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
 
     const workExperience = [
         {
@@ -56,7 +58,6 @@ function Work() {
                 "Repaired smartphones and tablets with quick, high-quality service.",
                 "Managed inventory for efficient repairs.",
                 "Provided technical support and device maintenance guidance."
-
             ],
             images: [teenfix1, teenfix2]
         },
@@ -98,13 +99,64 @@ function Work() {
     // Handle tab change
     const handleTabChange = (index) => {
         setActiveTab(index);
+        setDropdownOpen(false);
     };
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setDropdownOpen(false);
+            }
+        };
+        
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <section id="work" className={styles.container}>
             <h1>Work Experience</h1>
 
             <div className={styles.workContainer}>
+                {/* Mobile Dropdown */}
+                <div className={styles.mobileDropdown} ref={dropdownRef}>
+                    <div 
+                        className={styles.dropdownToggle} 
+                        onClick={() => setDropdownOpen(!dropdownOpen)}
+                    >
+                        <div className={styles.dropdownSelected}>
+                            <h3>{workExperience[activeTab].role}</h3>
+                            <p>{workExperience[activeTab].company}</p>
+                        </div>
+                        <div className={`${styles.dropdownArrow} ${dropdownOpen ? styles.open : ''}`}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    {dropdownOpen && (
+                        <div className={styles.dropdownMenu}>
+                            {workExperience.map((work, index) => (
+                                index !== activeTab && (
+                                    <div
+                                        key={index}
+                                        className={styles.dropdownItem}
+                                        onClick={() => handleTabChange(index)}
+                                    >
+                                        <h3>{work.role}</h3>
+                                        <p>{work.company}</p>
+                                    </div>
+                                )
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Desktop Tabs */}
                 <div className={styles.tabs}>
                     {workExperience.map((work, index) => (
                         <div
