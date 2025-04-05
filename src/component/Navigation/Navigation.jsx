@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './Navigation.module.css';
 import { Home, Briefcase, Laptop, GraduationCap, Code, Mail } from 'lucide-react';
 import { useTheme } from '../../common/ThemeContext';
@@ -6,8 +6,9 @@ import { useTheme } from '../../common/ThemeContext';
 function Navigation() {
   const [activeSection, setActiveSection] = useState('hero');
   const { theme, toggleTheme, isTransitioning } = useTheme();
-  const isScrollingRef = useRef(false);
-  const scrollTimeoutRef = useRef(null);
+  const isManualScrolling = useRef(false);
+  const scrollEndTimeout = useRef(null);
+  const observerRef = useRef(null);
 
   const navItems = [
     { id: 'hero', label: 'HOME', icon: <Home size={18} /> },
@@ -18,248 +19,132 @@ function Navigation() {
     { id: 'contact', label: 'CONTACT', icon: <Mail size={18} /> },
   ];
 
-  // Improved throttle function with proper reference handling
-  const throttle = useCallback((func, delay) => {
-    let lastCall = 0;
-    return (...args) => {
-      const now = new Date().getTime();
-      if (now - lastCall < delay) {
-        return;
-      }
-      lastCall = now;
-      func(...args);
-    };
-  }, []);
+  // Setup Intersection Observer for section detection
+  useEffect(() => {
+    // Clean up any existing observer
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
 
-  // Calculate active section with more stable approach
-  const calculateActiveSection = useCallback(() => {
-    // Don't update during programmatic scrolling
-    if (isScrollingRef.current) return;
-
-    const scrollPosition = window.scrollY;
+    // Get viewport height and calculate threshold
     const viewportHeight = window.innerHeight;
     const isMobile = window.innerWidth <= 768;
-    const offset = isMobile ? viewportHeight * 0.08 : 100; // Consistent with scroll offset
     
-    // Find the section that is most visible in the viewport
-    let maxVisibleSection = null;
-    let maxVisiblePercentage = 0;
-    let mostlyInView = false;
+    // Create options for the observer
+    const options = {
+      rootMargin: isMobile ? `-${viewportHeight * 0.1}px 0px -${viewportHeight * 0.6}px 0px` : 
+                             `-100px 0px -${viewportHeight * 0.5}px 0px`,
+      threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5]
+    };
+
+    // Track sections that are currently in view
+    const visibleSections = new Map();
+
+    const handleIntersection = (entries) => {
+      // Skip intersection updates during manual scrolling
+      if (isManualScrolling.current) return;
+
+      entries.forEach(entry => {
+        // Update visibility status for this section
+        visibleSections.set(entry.target.id, {
+          id: entry.target.id,
+          visible: entry.isIntersecting,
+          ratio: entry.intersectionRatio,
+          // Track top position for tie-breaking
+          position: entry.boundingClientRect.top
+        });
+      });
+      
+      // Find the most visible section using a weighted approach
+      // giving preference to sections near the top of the screen
+      let bestSection = null;
+      let bestScore = -1;
+      
+      visibleSections.forEach(section => {
+        if (section.visible) {
+          // Weight score by both visibility ratio and position from top
+          // Lower position (closer to top) gets higher priority
+          const positionScore = 1 - (Math.max(0, section.position) / viewportHeight);
+          const visibilityScore = section.ratio;
+          const score = visibilityScore * 0.7 + positionScore * 0.3;
+          
+          if (score > bestScore) {
+            bestScore = score;
+            bestSection = section.id;
+          }
+        }
+      });
+      
+      // Special case for top of page
+      if (window.scrollY < viewportHeight * 0.1) {
+        bestSection = 'hero';
+      }
+      
+      // Only update if we have a valid section
+      if (bestSection && bestSection !== activeSection) {
+        setActiveSection(bestSection);
+      }
+    };
+
+    // Create and setup observer
+    observerRef.current = new IntersectionObserver(handleIntersection, options);
     
-    // Use a hysteresis approach - require more visibility to change sections
-    // than to stay in the current section (prevents jumping back and forth)
-    const currentSectionThreshold = isMobile ? 20 : 30;  // Lower threshold to keep current section
-    const newSectionThreshold = isMobile ? 35 : 50;     // Higher threshold to change to new section
-    
+    // Observe all sections
     navItems.forEach(({ id }) => {
       const element = document.getElementById(id);
-      if (!element) return;
-      
-      const rect = element.getBoundingClientRect();
-      const sectionHeight = rect.height;
-      
-      // Get position relative to viewport
-      const visibleTop = Math.max(rect.top, 0);
-      const visibleBottom = Math.min(rect.bottom, viewportHeight);
-      
-      // Calculate how much of the section is visible as a percentage
-      if (visibleBottom > visibleTop) {
-        const visibleHeight = visibleBottom - visibleTop;
-        const visiblePercentage = (visibleHeight / sectionHeight) * 100;
-        
-        // Special case: if section is very tall, consider how much of viewport it occupies too
-        const viewportPercentage = (visibleHeight / viewportHeight) * 100;
-        const effectivePercentage = Math.max(visiblePercentage, viewportPercentage);
-        
-        if (effectivePercentage > maxVisiblePercentage) {
-          maxVisiblePercentage = effectivePercentage;
-          maxVisibleSection = id;
-          
-          // If a section passes the threshold for new section, mark it
-          if (effectivePercentage > newSectionThreshold) {
-            mostlyInView = true;
-          }
-          // If current section is still reasonably visible, prefer it
-          else if (id === activeSection && effectivePercentage > currentSectionThreshold) {
-            mostlyInView = true;
-          }
-        } else if (id === activeSection && effectivePercentage > currentSectionThreshold) {
-          // Special case: if current section is still reasonably visible but not the max,
-          // keep it active to prevent jumping
-          maxVisibleSection = id;
-          maxVisiblePercentage = effectivePercentage;
-          mostlyInView = true;
-        }
+      if (element) {
+        observerRef.current.observe(element);
+        // Initialize the visibility map
+        visibleSections.set(id, { id, visible: false, ratio: 0, position: Infinity });
       }
     });
-    
-    // Special case for the top of the page (hero section)
-    if (scrollPosition < offset) {
-      maxVisibleSection = 'hero';
-      mostlyInView = true;
-    }
-    
-    // Only update if we have a section that is significantly in view
-    // or if the current section is no longer visible enough
-    if (maxVisibleSection && 
-        (mostlyInView || 
-         (activeSection !== maxVisibleSection && maxVisiblePercentage > (isMobile ? 25 : 35)))) {
-      setActiveSection(maxVisibleSection);
-    }
-  }, [navItems, activeSection]);
+
+    // Clean up observer on unmount
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [activeSection, navItems]);
 
   // Improved scroll to section function
-  const scrollToSection = useCallback((id) => {
+  const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (!element) return;
     
-    // Clean up any existing timeout
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
+    // Clear any existing timeout
+    if (scrollEndTimeout.current) {
+      clearTimeout(scrollEndTimeout.current);
     }
     
     // Mark that we're starting programmatic scrolling
-    isScrollingRef.current = true;
+    isManualScrolling.current = true;
     
-    // Calculate dynamic offset based on viewport height for better mobile experience
-    const viewportHeight = window.innerHeight;
-    const isMobile = window.innerWidth <= 768;
-    const offset = isMobile ? viewportHeight * 0.08 : 80; // 8% of viewport height on mobile
-    
-    // Calculate position with a consistent offset
-    const elementPosition = element.getBoundingClientRect().top + window.scrollY - offset;
-    
-    // Set active section right away for better UX
+    // Set active section immediately for better UX feedback
     setActiveSection(id);
     
-    // Use requestAnimationFrame for smoother animation start
-    requestAnimationFrame(() => {
-      window.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth'
-      });
-      
-      // Extended settling time tracking
-      let lastPositions = [];
-      let isDecelerating = false;
-      const positionSampleSize = 3;
-      
-      // Create a detection system for when scrolling ends with momentum detection
-      const checkScrollEnd = () => {
-        const currentScrollTop = window.scrollY;
-        
-        // Add current position to our samples
-        lastPositions.push(currentScrollTop);
-        if (lastPositions.length > positionSampleSize) {
-          lastPositions.shift();
-        }
-        
-        // Detect if we're decelerating (slowing down)
-        if (lastPositions.length === positionSampleSize) {
-          const movementDeltas = [];
-          for (let i = 1; i < lastPositions.length; i++) {
-            movementDeltas.push(Math.abs(lastPositions[i] - lastPositions[i-1]));
-          }
-          
-          // If movement is getting smaller, we're decelerating
-          isDecelerating = movementDeltas[0] > movementDeltas[movementDeltas.length-1];
-        }
-        
-        // Check if we're completely stopped
-        if (lastPositions.length >= 2 && 
-            lastPositions[lastPositions.length-1] === lastPositions[lastPositions.length-2]) {
-          
-          // If we were decelerating and now we've stopped, add extra settling time
-          const settlingDelay = isDecelerating ? (isMobile ? 400 : 200) : 0;
-          
-          setTimeout(() => {
-            isScrollingRef.current = false;
-            calculateActiveSection();
-          }, settlingDelay);
-          
-          return;
-        }
-        
-        // Still scrolling, check again
-        scrollTimeoutRef.current = setTimeout(checkScrollEnd, isMobile ? 100 : 50);
-      };
-      
-      // Start checking after initial delay
-      scrollTimeoutRef.current = setTimeout(checkScrollEnd, 100);
-    });
-  }, [calculateActiveSection]);
-
-  // Set up improved scroll event listener
-  useEffect(() => {
+    // Calculate offset based on viewport
+    const viewportHeight = window.innerHeight;
     const isMobile = window.innerWidth <= 768;
-    const throttleTime = isMobile ? 300 : 150; // Even longer throttle time for mobile
-    let lastScrollTimestamp = 0;
-    let scrollTimeout = null;
+    const offset = isMobile ? viewportHeight * 0.08 : 80;
     
-    const handleScroll = throttle(() => {
-      const now = Date.now();
-      
-      // Reset any pending timeout
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout);
-      }
-      
-      // Don't recalculate during rapid scrolling or momentum scrolling
-      // Instead, schedule a check for when scrolling has likely settled
-      const timeSinceLastScroll = now - lastScrollTimestamp;
-      lastScrollTimestamp = now;
-      
-      if (timeSinceLastScroll < 50) {
-        // Rapid scrolling, delay any recalculation
-        scrollTimeout = setTimeout(() => {
-          if (!isScrollingRef.current) {
-            calculateActiveSection();
-          }
-        }, isMobile ? 400 : 200);
-        return;
-      }
-      
-      // Normal scrolling or settled scrolling
-      if (!isScrollingRef.current) {
-        calculateActiveSection();
-      }
-    }, throttleTime);
+    // Get element position with offset
+    const elementPosition = element.getBoundingClientRect().top + window.scrollY - offset;
     
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Scroll with smooth behavior
+    window.scrollTo({
+      top: elementPosition,
+      behavior: 'smooth'
+    });
     
-    // Calculate initial section after a short delay to ensure DOM is ready
-    const initialTimeout = setTimeout(() => {
-      calculateActiveSection();
-    }, 100);
+    // Allow time for the scroll to complete before re-enabling intersection observer
+    // This is a more reliable approach than trying to detect when scrolling has ended
+    const scrollDuration = Math.min(1000, Math.abs(window.scrollY - elementPosition) / 3);
     
-    // Handle window resize to adjust for mobile/desktop changes
-    const handleResize = throttle(() => {
-      // Reset scrolling state
-      isScrollingRef.current = false;
-      // Clear any scheduled calculations
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout);
-      }
-      // Recalculate after a short delay to let the resize complete
-      setTimeout(() => {
-        calculateActiveSection();
-      }, 100);
-    }, 200);
-    
-    window.addEventListener('resize', handleResize, { passive: true });
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
-      clearTimeout(initialTimeout);
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout);
-      }
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-    };
-  }, [calculateActiveSection, throttle]);
+    scrollEndTimeout.current = setTimeout(() => {
+      isManualScrolling.current = false;
+    }, scrollDuration + 100); // Add a small buffer
+  };
 
   return (
     <>
