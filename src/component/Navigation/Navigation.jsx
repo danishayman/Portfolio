@@ -46,12 +46,19 @@ function Navigation() {
     let maxVisiblePercentage = 0;
     let mostlyInView = false;
     
+    // Use a hysteresis approach - require more visibility to change sections
+    // than to stay in the current section (prevents jumping back and forth)
+    const currentSectionThreshold = isMobile ? 20 : 30;  // Lower threshold to keep current section
+    const newSectionThreshold = isMobile ? 35 : 50;     // Higher threshold to change to new section
+    
     navItems.forEach(({ id }) => {
       const element = document.getElementById(id);
       if (!element) return;
       
       const rect = element.getBoundingClientRect();
       const sectionHeight = rect.height;
+      
+      // Get position relative to viewport
       const visibleTop = Math.max(rect.top, 0);
       const visibleBottom = Math.min(rect.bottom, viewportHeight);
       
@@ -60,14 +67,28 @@ function Navigation() {
         const visibleHeight = visibleBottom - visibleTop;
         const visiblePercentage = (visibleHeight / sectionHeight) * 100;
         
-        if (visiblePercentage > maxVisiblePercentage) {
-          maxVisiblePercentage = visiblePercentage;
+        // Special case: if section is very tall, consider how much of viewport it occupies too
+        const viewportPercentage = (visibleHeight / viewportHeight) * 100;
+        const effectivePercentage = Math.max(visiblePercentage, viewportPercentage);
+        
+        if (effectivePercentage > maxVisiblePercentage) {
+          maxVisiblePercentage = effectivePercentage;
           maxVisibleSection = id;
           
-          // If a section is mostly in view, prioritize it
-          if (visiblePercentage > (isMobile ? 30 : 50)) {
+          // If a section passes the threshold for new section, mark it
+          if (effectivePercentage > newSectionThreshold) {
             mostlyInView = true;
           }
+          // If current section is still reasonably visible, prefer it
+          else if (id === activeSection && effectivePercentage > currentSectionThreshold) {
+            mostlyInView = true;
+          }
+        } else if (id === activeSection && effectivePercentage > currentSectionThreshold) {
+          // Special case: if current section is still reasonably visible but not the max,
+          // keep it active to prevent jumping
+          maxVisibleSection = id;
+          maxVisiblePercentage = effectivePercentage;
+          mostlyInView = true;
         }
       }
     });
@@ -79,10 +100,13 @@ function Navigation() {
     }
     
     // Only update if we have a section that is significantly in view
-    if (maxVisibleSection && (mostlyInView || maxVisiblePercentage > (isMobile ? 15 : 25))) {
+    // or if the current section is no longer visible enough
+    if (maxVisibleSection && 
+        (mostlyInView || 
+         (activeSection !== maxVisibleSection && maxVisiblePercentage > (isMobile ? 25 : 35)))) {
       setActiveSection(maxVisibleSection);
     }
-  }, [navItems]);
+  }, [navItems, activeSection]);
 
   // Improved scroll to section function
   const scrollToSection = useCallback((id) => {
@@ -115,40 +139,90 @@ function Navigation() {
         behavior: 'smooth'
       });
       
-      // Create a detection system for when scrolling ends
+      // Extended settling time tracking
+      let lastPositions = [];
+      let isDecelerating = false;
+      const positionSampleSize = 3;
+      
+      // Create a detection system for when scrolling ends with momentum detection
       const checkScrollEnd = () => {
-        const previousScrollTop = window.scrollY;
+        const currentScrollTop = window.scrollY;
         
-        // Check if scrolling has stopped after a short delay
-        scrollTimeoutRef.current = setTimeout(() => {
-          if (previousScrollTop === window.scrollY) {
-            // Scrolling has stopped
-            isScrollingRef.current = false;
-            
-            // Wait a bit longer before recalculating on mobile
-            setTimeout(() => {
-              if (!isScrollingRef.current) {
-                calculateActiveSection();
-              }
-            }, isMobile ? 200 : 50);
-          } else {
-            // Still scrolling, check again
-            checkScrollEnd();
+        // Add current position to our samples
+        lastPositions.push(currentScrollTop);
+        if (lastPositions.length > positionSampleSize) {
+          lastPositions.shift();
+        }
+        
+        // Detect if we're decelerating (slowing down)
+        if (lastPositions.length === positionSampleSize) {
+          const movementDeltas = [];
+          for (let i = 1; i < lastPositions.length; i++) {
+            movementDeltas.push(Math.abs(lastPositions[i] - lastPositions[i-1]));
           }
-        }, isMobile ? 150 : 100);
+          
+          // If movement is getting smaller, we're decelerating
+          isDecelerating = movementDeltas[0] > movementDeltas[movementDeltas.length-1];
+        }
+        
+        // Check if we're completely stopped
+        if (lastPositions.length >= 2 && 
+            lastPositions[lastPositions.length-1] === lastPositions[lastPositions.length-2]) {
+          
+          // If we were decelerating and now we've stopped, add extra settling time
+          const settlingDelay = isDecelerating ? (isMobile ? 400 : 200) : 0;
+          
+          setTimeout(() => {
+            isScrollingRef.current = false;
+            calculateActiveSection();
+          }, settlingDelay);
+          
+          return;
+        }
+        
+        // Still scrolling, check again
+        scrollTimeoutRef.current = setTimeout(checkScrollEnd, isMobile ? 100 : 50);
       };
       
-      checkScrollEnd();
+      // Start checking after initial delay
+      scrollTimeoutRef.current = setTimeout(checkScrollEnd, 100);
     });
   }, [calculateActiveSection]);
 
   // Set up improved scroll event listener
   useEffect(() => {
     const isMobile = window.innerWidth <= 768;
-    const throttleTime = isMobile ? 250 : 150; // Longer throttle time for mobile
+    const throttleTime = isMobile ? 300 : 150; // Even longer throttle time for mobile
+    let lastScrollTimestamp = 0;
+    let scrollTimeout = null;
     
     const handleScroll = throttle(() => {
-      calculateActiveSection();
+      const now = Date.now();
+      
+      // Reset any pending timeout
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+      
+      // Don't recalculate during rapid scrolling or momentum scrolling
+      // Instead, schedule a check for when scrolling has likely settled
+      const timeSinceLastScroll = now - lastScrollTimestamp;
+      lastScrollTimestamp = now;
+      
+      if (timeSinceLastScroll < 50) {
+        // Rapid scrolling, delay any recalculation
+        scrollTimeout = setTimeout(() => {
+          if (!isScrollingRef.current) {
+            calculateActiveSection();
+          }
+        }, isMobile ? 400 : 200);
+        return;
+      }
+      
+      // Normal scrolling or settled scrolling
+      if (!isScrollingRef.current) {
+        calculateActiveSection();
+      }
     }, throttleTime);
     
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -160,9 +234,16 @@ function Navigation() {
     
     // Handle window resize to adjust for mobile/desktop changes
     const handleResize = throttle(() => {
-      // Recalculate section after resize
+      // Reset scrolling state
       isScrollingRef.current = false;
-      calculateActiveSection();
+      // Clear any scheduled calculations
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+      // Recalculate after a short delay to let the resize complete
+      setTimeout(() => {
+        calculateActiveSection();
+      }, 100);
     }, 200);
     
     window.addEventListener('resize', handleResize, { passive: true });
@@ -171,6 +252,9 @@ function Navigation() {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
       clearTimeout(initialTimeout);
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
